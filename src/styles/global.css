@@ -1377,10 +1377,18 @@ body {
   transform-style: preserve-3d;
   transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.race-flip:hover .race-flip__inner,
-.race-flip:focus-within .race-flip__inner,
+/* Tapped open (touch) or hovered (mouse). The hover and focus versions
+   only apply where the device really hovers: on a phone, a tap leaves the
+   card in a sticky :hover and :focus-within state, which would hold it
+   flipped after the second tap had already turned it back. */
 .race-flip.is-flipped .race-flip__inner {
   transform: rotateY(180deg);
+}
+@media (hover: hover) {
+  .race-flip:hover .race-flip__inner,
+  .race-flip:focus-within .race-flip__inner {
+    transform: rotateY(180deg);
+  }
 }
 .race-flip__face {
   backface-visibility: hidden;
@@ -1417,17 +1425,24 @@ body {
 /* The open card sits above its neighbours, since its artwork now spills
    past the card edge, and the other three step back so the spill reads
    clearly against them. */
-.race-flip:hover,
 .race-flip.is-flipped {
   z-index: 3;
+}
+@media (hover: hover) {
+  .race-flip:hover { z-index: 3; }
 }
 .race-flip {
   transition: opacity 400ms ease, filter 400ms ease;
 }
-.race-grid:has(.race-flip:hover) .race-flip:not(:hover),
 .race-grid:has(.race-flip.is-flipped) .race-flip:not(.is-flipped) {
   opacity: 0.35;
   filter: saturate(0.55);
+}
+@media (hover: hover) {
+  .race-grid:has(.race-flip:hover) .race-flip:not(:hover) {
+    opacity: 0.35;
+    filter: saturate(0.55);
+  }
 }
 
 /* "See the race kit", bottom of the front face. */
