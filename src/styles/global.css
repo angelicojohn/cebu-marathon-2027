@@ -650,10 +650,12 @@ body {
    feathers fan up behind the car the way they do on the poster. */
 .raffle-tile__stage {
   position: absolute;
-  /* Held just inside the bottom edge so both wheels sit whole; it still
-     runs off the right side, where only the rear of the car is cropped. */
+  /* The poster this car was cut from has a band across the bottom of the
+     tyres, so the cut-out ends in flat edges there. Sinking the car below
+     the card's bottom edge lets the card's own crop hide them, which reads
+     as the car driving out of the frame rather than as a clipped wheel. */
   right: -6%;
-  bottom: 3%;
+  bottom: -8%;
   width: 104%;
   aspect-ratio: 1977 / 1100;
   pointer-events: none;
@@ -698,7 +700,7 @@ body {
     right: auto;
     bottom: auto;
     width: 118%;
-    margin: 48px -12% -6% auto;
+    margin: 48px -12% -13% auto;
   }
 }
 
