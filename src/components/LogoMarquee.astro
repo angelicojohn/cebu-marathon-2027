@@ -1,0 +1,108 @@
+---
+/**
+ * BYQ Supply — "Animated Integration Logo Showcase" (good-biz-integrations-1)
+ * https://app.byq.supply/sections/good-biz-integrations-1
+ *
+ * Preserved: the centred headline over an infinite horizontal logo marquee,
+ * each mark set in its own light frame, continuous loop with no interaction
+ * required, and gradient fade masks at both edges.
+ *
+ * Adapted: the source uses circular frames on a purple field; these are
+ * rounded chips on the brand cream, because the supplied sponsor logos mix
+ * dark ink on transparency with opaque white-background marks and only a
+ * light chip renders the whole set correctly. The marquee is CSS-only —
+ * the track is duplicated once and translated -50%, so the seam lands
+ * exactly where the first copy ends.
+ */
+import { marqueeLogos } from "../data/event";
+import ScatterIcons from "./ScatterIcons.astro";
+
+/**
+ * Scale every logo to the same optical size rather than the same height.
+ * Capping by height alone makes a long, thin wordmark (SM Seaside is 7x
+ * wider than it is tall) tower over a square one (Leonas is 1:1) even
+ * though both are "36px". Holding the geometric mean roughly constant
+ * evens them out; the clamp keeps the extremes sensible.
+ */
+const opticalHeight = (w: number, h: number) => {
+  const ratio = w / h;
+  return Math.round(Math.min(58, Math.max(24, 62 / Math.sqrt(ratio))));
+};
+
+/* Two identical halves, each holding the logo set twice so a single half is
+   wider than even an ultra-wide window. The track moves by exactly one half
+   per cycle. Spacing is a right margin on every logo rather than a flex
+   `gap`, because a gap sits *between* items only — the two halves would then
+   differ by one gap and the loop would jump by that much every cycle. */
+const half = [...marqueeLogos, ...marqueeLogos];
+const track = [...half, ...half];
+---
+
+<section
+  class="relative overflow-hidden bg-white py-14 max-[767px]:py-10"
+  aria-label="Sponsors and partners"
+>
+  <ScatterIcons variant="e" opacity={0.3} />
+  <p
+    class="relative z-[1] mb-8 text-center font-mono text-[12px] tracking-[2px] text-navy-ink/45 uppercase"
+  >
+    Presented by Cebu Landmasters &middot; with our official partners
+  </p>
+
+  <div class="marquee-mask relative z-[1] w-full">
+    <div class="marquee-track flex w-max items-center">
+      {
+        track.map((logo, i) => (
+          <div
+            aria-hidden={i >= marqueeLogos.length ? "true" : undefined}
+            class="mr-20 flex h-[72px] flex-none items-center justify-center max-[767px]:mr-12 max-[767px]:h-[60px]"
+          >
+            <img
+              src={logo.logo}
+              alt={i >= marqueeLogos.length ? "" : logo.name}
+              loading="lazy"
+              width={logo.w}
+              height={logo.h}
+              style={`height:${opticalHeight(logo.w, logo.h)}px`}
+              class="w-auto max-w-[190px] object-contain max-[767px]:max-w-[150px]"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Edge fade so logos enter and leave rather than popping at the bounds. */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .marquee-track {
+    animation: marquee 80s linear infinite;
+  }
+
+  /* The track holds two identical halves, so -50% is exactly one loop. */
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+</style>

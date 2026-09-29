@@ -1,0 +1,71 @@
+---
+/**
+ * Sparse landmark line art used as a design accent.
+ *
+ * Two or three marks per section, out at the margins, so the motif recurs
+ * quietly down the page instead of framing any one section. Each variant
+ * draws different landmarks in different positions, so scrolling never
+ * shows the same silhouette twice in a row.
+ *
+ * Positions are percentages, so each composition holds at any width.
+ * Everything is aria-hidden and pointer-events:none — this is texture, not
+ * content — and the layer is hidden below 991px, where there is no margin
+ * left for it to live in.
+ */
+interface Props {
+  variant?: "a" | "b" | "c" | "d" | "e";
+  /** 0–1. */
+  opacity?: number;
+}
+
+const { variant = "a", opacity = 0.45 } = Astro.props;
+
+const sets = {
+  a: [
+    { src: "/images/icon-sto-nino.png", top: "8%", left: "3%", w: 130, rotate: -6 },
+    { src: "/images/icon-cclex.png", top: "58%", right: "2%", w: 210, rotate: 3 },
+  ],
+  b: [
+    { src: "/images/icon-puso.png", top: "14%", right: "5%", w: 84, rotate: 7 },
+    { src: "/images/icon-srp-tunnel.png", top: "66%", left: "2%", w: 180, rotate: -3 },
+  ],
+  c: [
+    { src: "/images/icon-sm-seaside-tower.png", top: "10%", left: "4%", w: 125, rotate: 4 },
+    { src: "/images/icon-fish.png", top: "62%", right: "4%", w: 120, rotate: -5 },
+  ],
+  d: [
+    { src: "/images/icon-capitol.png", top: "18%", right: "3%", w: 165, rotate: -4 },
+    { src: "/images/icon-sm-seaside-arena.png", top: "70%", left: "3%", w: 150, rotate: 3 },
+  ],
+  e: [
+    { src: "/images/icon-fish.png", top: "22%", left: "4%", w: 115, rotate: 5 },
+    { src: "/images/icon-puso.png", top: "64%", right: "6%", w: 80, rotate: -8 },
+  ],
+};
+
+const marks = sets[variant];
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none absolute inset-0 z-0 overflow-hidden max-[991px]:hidden"
+  style={`opacity:${opacity}`}
+>
+  {
+    marks.map((m) => (
+      <img
+        src={m.src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="absolute w-auto"
+        style={[
+          `top:${m.top}`,
+          "left" in m ? `left:${m.left}` : `right:${m.right}`,
+          `width:${m.w}px`,
+          `transform:rotate(${m.rotate}deg)`,
+        ].join(";")}
+      />
+    ))
+  }
+</div>

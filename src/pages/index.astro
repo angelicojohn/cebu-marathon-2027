@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import LogoMarquee from "../components/LogoMarquee.astro";
+import Distances from "../components/Distances.astro";
+import Prizes from "../components/Prizes.astro";
+import RaceBento from "../components/RaceBento.astro";
+import Route from "../components/Route.astro";
+import Stats from "../components/Stats.astro";
+import History from "../components/History.astro";
+import Perks from "../components/Perks.astro";
+import Faq from "../components/Faq.astro";
+import Film from "../components/Film.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+  {/*
+    Condensed cut of the full site — seven sections instead of fourteen.
+
+      hook → credibility → PICK A DISTANCE → what the race is
+      → the numbers → objections → close
+
+    Everything that had its own section on the full build (hotels, history,
+    community runs, prize tables, race rules, the partner pitch) is either
+    folded into a bento tile, reduced to one stat, or dropped. What survives
+    is whatever moves somebody toward the registration portal.
+  */}
+  <Navbar />
+  <main>
+    <Hero />
+    <LogoMarquee />
+    <Distances />
+    <Prizes />
+    <RaceBento />
+    <Route />
+    <Stats />
+    <History />
+    <Perks />
+    <Faq />
+    <Film />
+  </main>
+  <Footer />
+</Layout>

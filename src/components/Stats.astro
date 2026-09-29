@@ -1,0 +1,128 @@
+---
+/**
+ * BYQ Supply — "Stats Section with Animated Counters" (nextwell-stats-3)
+ * https://app.byq.supply/sections/nextwell-stats-3
+ *
+ * Preserved: the full-bleed dark background image with a mid-strength
+ * overlay, the two-zone layout (headline top-left, stat grid below), the
+ * oversized display numerals paired with uppercase mono labels, and the
+ * count-up-from-zero animation with a blur-to-sharp transition that fires
+ * once on scroll entry.
+ *
+ * Adapted: four stats rather than three, and the counter respects
+ * prefers-reduced-motion by jumping straight to the final value.
+ */
+import { stats } from "../data/event";
+import ScatterIcons from "./ScatterIcons.astro";
+
+const format = (n: number) => n.toLocaleString("en-PH");
+---
+
+<section
+  id="numbers"
+  class="pattern pattern--edges relative z-[1] overflow-hidden bg-cream py-[150px] max-[991px]:py-[120px] max-[767px]:py-24"
+>
+  
+
+  <ScatterIcons variant="c" opacity={0.42} />
+
+  <div class="relative z-[2] mx-auto w-full max-w-[1400px] px-6 max-[479px]:px-4">
+    <div data-reveal class="mb-16 max-w-[720px] max-[767px]:mb-10">
+      <span class="font-mono text-[12px] tracking-[2px] text-gold-deep uppercase">
+        By the numbers
+      </span>
+      <h2
+        class="headline mt-4 mb-0 font-display text-navy-ink uppercase"
+      >
+        The biggest race in the <span class="script feather-text">south</span>
+      </h2>
+    </div>
+
+    {/* Equal gaps, not equal columns. The four figures are very different
+        widths ("40+" against "₱70,000"), so four equal columns left uneven
+        white space between them. On the single row the items size to their
+        content and `justify-between` spreads the leftover evenly; the
+        2-up and 1-up layouts below stay on a grid. */}
+    <div
+      class="flex justify-between gap-8 max-[991px]:grid max-[991px]:grid-cols-2 max-[479px]:grid-cols-1 max-[479px]:gap-7"
+    >
+      {
+        stats.map((stat, i) => (
+          <div data-reveal data-reveal-delay={`${i * 90}ms`} class="flex flex-col gap-3">
+            {/* The counter animates up from zero, which would change its
+                width every frame and shuffle the row. An invisible copy of
+                the final figure shares its grid cell and holds the width. */}
+            <span class="inline-grid type-stat-lg font-condensed text-rose tabular-nums">
+              <span class="invisible [grid-area:1/1]" aria-hidden="true">
+                {(stat.prefix ?? "") + format(stat.value) + (stat.suffix ?? "")}
+              </span>
+              <span
+                data-counter
+                data-value={stat.value}
+                data-prefix={stat.prefix ?? ""}
+                data-suffix={stat.suffix ?? ""}
+                class="[grid-area:1/1]"
+              >
+                {(stat.prefix ?? "") + format(stat.value) + (stat.suffix ?? "")}
+              </span>
+            </span>
+            <span class="font-mono text-[13px] tracking-[1.5px] text-navy-ink/55 uppercase">
+              {stat.label}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Count-up with a blur-to-sharp entry, as in the BYQ source.
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const counters = document.querySelectorAll<HTMLElement>("[data-counter]");
+
+  const format = (n: number) => n.toLocaleString("en-PH");
+
+  const run = (el: HTMLElement) => {
+    const target = Number(el.dataset.value ?? 0);
+    const prefix = el.dataset.prefix ?? "";
+    const suffix = el.dataset.suffix ?? "";
+
+    if (reduced) {
+      el.textContent = prefix + format(target) + suffix;
+      return;
+    }
+
+    const duration = 1600;
+    const start = performance.now();
+    el.style.filter = "blur(8px)";
+    el.style.transition = "filter 600ms ease-out";
+
+    const step = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      // easeOutExpo — fast out of the gate, long settle on the final digits
+      const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      el.textContent = prefix + format(Math.round(target * eased)) + suffix;
+      if (t < 1) requestAnimationFrame(step);
+      else el.style.filter = "blur(0)";
+    };
+
+    requestAnimationFrame(step);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        run(entry.target as HTMLElement);
+        obs.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.4 },
+  );
+
+  counters.forEach((el) => {
+    if (!reduced) el.textContent = "0";
+    observer.observe(el);
+  });
+</script>

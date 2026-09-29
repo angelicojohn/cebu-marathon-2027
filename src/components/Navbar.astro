@@ -1,0 +1,148 @@
+---
+/**
+ * BYQ Supply — "Navbar with Dropdowns and CTA" (go-smart-navbar-1)
+ * https://app.byq.supply/sections/go-smart-navbar-1
+ *
+ * Preserved: the two-column full-width bar (brand left, links + CTA right),
+ * inline desktop links, the paired outline/filled CTA treatment, and the
+ * hamburger collapse below the tablet breakpoint.
+ *
+ * Adapted: the source ships two CTAs; a race has exactly one action worth
+ * taking, so the outline slot carries the anchor to the categories and the
+ * filled slot goes straight to the registration portal.
+ */
+import { event } from "../data/event";
+import CtaButton from "./CtaButton.astro";
+
+const links = [
+  { label: "Distances", href: "#distances" },
+  { label: "The race", href: "#race" },
+  { label: "Numbers", href: "#numbers" },
+  { label: "FAQ", href: "#faq" },
+];
+---
+
+<nav
+  role="banner"
+  data-nav
+  class="site-nav fixed top-0 right-0 left-0 z-50 w-full"
+>
+  <div
+    class="site-nav__bar mx-auto flex w-full max-w-[1400px] flex-row items-center justify-between px-6 max-[479px]:px-4"
+  >
+    <a href="#top" class="flex flex-shrink-0 items-center no-underline">
+      {/* The same lockup twice — colour for the cream bar, and a copy with
+          its black lettering turned white for the photo — stacked, so the
+          change between them is a crossfade with nothing moving. */}
+      <span class="site-nav__brand">
+        <img
+          src="/images/logo-cli-black.png"
+          alt="Cebu Marathon 2027"
+          width={720}
+          height={279}
+          class="site-nav__logo site-nav__logo--dark"
+        />
+        <img
+          src="/images/logo-cli-white.png"
+          alt=""
+          aria-hidden="true"
+          width={720}
+          height={279}
+          class="site-nav__logo site-nav__logo--light"
+        />
+      </span>
+    </a>
+
+    <div class="flex items-center gap-2">
+      <div
+        data-nav-menu
+        class="flex items-center font-body text-[18px] text-navy-ink/85 max-[991px]:absolute max-[991px]:top-full max-[991px]:right-0 max-[991px]:left-0 max-[991px]:hidden max-[991px]:flex-col max-[991px]:items-start max-[991px]:gap-1 max-[991px]:border-b max-[991px]:border-navy-ink/10 max-[991px]:bg-cream-soft max-[991px]:px-6 max-[991px]:py-5"
+      >
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              data-nav-link
+              class="px-4 py-2 no-underline transition-colors duration-200 hover:text-gold max-[991px]:w-full max-[991px]:px-0 max-[991px]:py-2.5 max-[991px]:text-[21px]"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        {/* Wrapped, because `.cta` sets its own display and a `hidden`
+            utility on the component itself would not win. */}
+        <div class="mt-4 hidden w-full max-[991px]:block">
+          <CtaButton href={event.registrationUrl} label="Register now" size="sm" full />
+        </div>
+      </div>
+
+      <div class="mx-2 h-4 w-px bg-navy-ink/15 max-[991px]:hidden"></div>
+
+      {/* Outline CTA */}
+      <a
+        href="#distances"
+        class="nav-ghost flex h-11 items-center justify-center rounded-pill bg-navy-ink px-5 font-body text-[18px] font-bold text-white no-underline transition-colors duration-200 hover:bg-navy-800 max-[991px]:hidden"
+      >
+        Distances
+      </a>
+
+      {/* Filled CTA */}
+      <div class="max-[767px]:hidden">
+        <CtaButton href={event.registrationUrl} label="Register now" size="sm" />
+      </div>
+
+      <button
+        type="button"
+        data-menu-toggle
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        class="hidden h-11 w-11 flex-none items-center justify-center rounded-full bg-navy-ink/10 transition-colors duration-200 max-[991px]:flex"
+      >
+        <span class="flex h-full w-full flex-col items-center justify-center gap-1">
+          <span data-bar class="h-0.5 w-[26px] rounded-sm bg-navy-ink transition-colors"></span>
+          <span data-bar class="h-0.5 w-[17px] rounded-sm bg-navy-ink transition-colors"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const nav = document.querySelector("nav[role='banner']");
+  if (nav) {
+    const menu = nav.querySelector<HTMLElement>("[data-nav-menu]");
+    const toggle = nav.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+    const bars = nav.querySelectorAll<HTMLElement>("[data-bar]");
+
+    const setMenu = (open: boolean) => {
+      menu?.classList.toggle("max-[991px]:hidden", !open);
+      toggle?.setAttribute("aria-expanded", String(open));
+      toggle?.classList.toggle("bg-gold", open);
+      toggle?.classList.toggle("bg-navy-ink/10", !open);
+      bars.forEach((b) => {
+        b.classList.toggle("bg-white", open);
+        b.classList.toggle("bg-navy-ink", !open);
+      });
+    };
+
+    toggle?.addEventListener("click", () =>
+      setMenu(menu?.classList.contains("max-[991px]:hidden") ?? false),
+    );
+
+    nav.querySelectorAll("[data-nav-link]").forEach((link) =>
+      link.addEventListener("click", () => {
+        if (window.matchMedia("(max-width: 991px)").matches) setMenu(false);
+      }),
+    );
+  }
+</script>
+
+<script>
+  /* The bar is transparent over the hero and solid once the page moves. */
+  const nav = document.querySelector<HTMLElement>("[data-nav]");
+  if (nav) {
+    const sync = () => nav.classList.toggle("is-stuck", window.scrollY > 24);
+    sync();
+    window.addEventListener("scroll", sync, { passive: true });
+  }
+</script>

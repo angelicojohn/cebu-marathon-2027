@@ -1,0 +1,250 @@
+---
+/**
+ * Closing call to action, in the Relume "CTA 31" layout: a centred heading,
+ * one supporting line and two buttons, with a wide media frame beneath.
+ *
+ * The frame holds the race film with a full control bar — play/pause, a
+ * scrubbable progress bar, elapsed and total time, sound, and full screen —
+ * plus a large play button over the poster until the film has started.
+ *
+ * The film is large, so it is not requested until the section is close to
+ * the viewport. It autoplays muted once it arrives (browsers only allow
+ * muted autoplay), pauses when scrolled away, and resumes on return unless
+ * the viewer paused it themselves.
+ */
+import { event } from "../data/event";
+import CtaButton from "./CtaButton.astro";
+
+const src =
+  "https://video.wixstatic.com/video/2c615c_58120a5ef7414459bc7a53fb0d3e4bf1/1080p/mp4/file.mp4";
+---
+
+<section
+  id="film"
+  class="film-cta pattern pattern--invert relative overflow-hidden bg-navy-950 py-[150px] max-[991px]:py-[120px] text-bone max-[479px]:py-[96px]"
+>
+  <div class="relative z-[1] mx-auto w-full max-w-[1400px] px-6 max-[479px]:px-4">
+    {/* Copy */}
+    <div class="mx-auto mb-14 flex max-w-[760px] flex-col items-center gap-5 text-center">
+      <h2 data-reveal class="headline m-0 font-display text-bone uppercase">
+        See you at the <span class="script feather-text">start</span> line
+      </h2>
+      <p
+        data-reveal
+        data-reveal-delay="120ms"
+        class="m-0 max-w-[56ch] text-[19px] leading-[1.6] text-bone-88 max-[479px]:text-[17px]"
+      >
+        Sunday, 10 January 2027, from SM Seaside City Cebu and over the CCLEX.
+        Online registration only &mdash; slots are limited in every distance.
+      </p>
+      <div
+        data-reveal
+        data-reveal-delay="220ms"
+        class="mt-3 flex flex-wrap items-center justify-center gap-4"
+      >
+        <CtaButton href={event.registrationUrl} label="Register now" size="lg" />
+        <a href="#distances" class="film-secondary">See the distances</a>
+      </div>
+    </div>
+
+    {/* Player */}
+    <div data-reveal data-reveal-delay="300ms" class="player" data-player>
+      <video
+        data-player-video
+        class="player__video"
+        poster="/images/film-poster.jpg"
+        data-src={src}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-label="Cebu Marathon 2027 film"
+      ></video>
+
+      {/* Big play button, shown until the film is running */}
+      <button type="button" class="player__big" data-player-big aria-label="Play film">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" /></svg>
+      </button>
+
+      {/* Control bar */}
+      <div class="player__bar">
+        <button type="button" class="player__btn" data-player-play aria-label="Play">
+          <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" /></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor" /></svg>
+        </button>
+
+        <span class="player__time" data-player-time>0:00</span>
+
+        <input
+          type="range"
+          class="player__seek"
+          data-player-seek
+          min="0"
+          max="1000"
+          value="0"
+          step="1"
+          aria-label="Seek"
+        />
+
+        <span class="player__time" data-player-duration>1:48</span>
+
+        <div class="player__sound">
+          <button type="button" class="player__btn" data-player-mute aria-label="Turn sound on" aria-pressed="false">
+            <svg class="icon-muted" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4V5Z" fill="currentColor" stroke="none" /><path d="m16 9 5 6m0-6-5 6" /></svg>
+            <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4V5Z" fill="currentColor" stroke="none" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>
+          </button>
+          <input
+            type="range"
+            class="player__seek player__volume"
+            data-player-volume
+            min="0"
+            max="100"
+            value="100"
+            step="1"
+            aria-label="Volume"
+          />
+        </div>
+
+        <button type="button" class="player__btn" data-player-full aria-label="Full screen">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const player = document.querySelector<HTMLElement>("[data-player]");
+
+  if (player) {
+    const video = player.querySelector<HTMLVideoElement>("[data-player-video]")!;
+    const big = player.querySelector<HTMLButtonElement>("[data-player-big]")!;
+    const play = player.querySelector<HTMLButtonElement>("[data-player-play]")!;
+    const mute = player.querySelector<HTMLButtonElement>("[data-player-mute]")!;
+    const full = player.querySelector<HTMLButtonElement>("[data-player-full]")!;
+    const seek = player.querySelector<HTMLInputElement>("[data-player-seek]")!;
+    const time = player.querySelector<HTMLElement>("[data-player-time]")!;
+    const duration = player.querySelector<HTMLElement>("[data-player-duration]")!;
+
+    const fmt = (t: number) => {
+      if (!isFinite(t)) return "0:00";
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return `${m}:${String(s).padStart(2, "0")}`;
+    };
+
+    let loaded = false;
+    const load = () => {
+      if (loaded) return;
+      loaded = true;
+      video.src = video.dataset.src ?? "";
+      video.load();
+    };
+    let userPaused = false;
+    const start = () => {
+      load();
+      video.play().catch(() => {});
+    };
+
+    /* Arrive → load and autoplay muted; leave → pause. */
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!userPaused) start();
+        } else if (!video.paused) {
+          video.pause();
+        }
+      },
+      { rootMargin: "300px 0px", threshold: 0.15 },
+    ).observe(player);
+
+    const toggle = () => {
+      if (video.paused) {
+        userPaused = false;
+        start();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
+    };
+    big.addEventListener("click", toggle);
+    play.addEventListener("click", toggle);
+    video.addEventListener("click", toggle);
+
+    video.addEventListener("play", () => {
+      player.classList.add("is-playing", "has-started");
+      play.setAttribute("aria-label", "Pause");
+    });
+    video.addEventListener("pause", () => {
+      player.classList.remove("is-playing");
+      play.setAttribute("aria-label", "Play");
+    });
+
+    /* Progress. The range fill is a custom property on the input. */
+    let seeking = false;
+    const paint = () => {
+      const p = video.duration ? video.currentTime / video.duration : 0;
+      if (!seeking) seek.value = String(Math.round(p * 1000));
+      seek.style.setProperty("--fill", `${(Number(seek.value) / 10).toFixed(2)}%`);
+      time.textContent = fmt(video.currentTime);
+    };
+    video.addEventListener("timeupdate", paint);
+    video.addEventListener("loadedmetadata", () => {
+      duration.textContent = fmt(video.duration);
+      paint();
+    });
+    seek.addEventListener("input", () => {
+      seeking = true;
+      load();
+      if (video.duration) {
+        video.currentTime = (Number(seek.value) / 1000) * video.duration;
+      }
+      seek.style.setProperty("--fill", `${(Number(seek.value) / 10).toFixed(2)}%`);
+    });
+    seek.addEventListener("change", () => (seeking = false));
+
+    /* Sound: the button mutes and unmutes; the slider sets the level.
+       Dragging the slider up from silence also unmutes, and dragging it to
+       zero mutes, so the two never disagree. */
+    const volume = player.querySelector<HTMLInputElement>("[data-player-volume]")!;
+    const paintVolume = () => {
+      const level = video.muted ? 0 : Math.round(video.volume * 100);
+      volume.value = String(level);
+      volume.style.setProperty("--fill", `${level}%`);
+      player.classList.toggle("is-unmuted", !video.muted && video.volume > 0);
+      mute.setAttribute("aria-pressed", String(!video.muted));
+      mute.setAttribute("aria-label", video.muted ? "Turn sound on" : "Turn sound off");
+    };
+    const wakeForSound = () => {
+      if (video.paused) {
+        userPaused = false;
+        start();
+      }
+    };
+    mute.addEventListener("click", () => {
+      video.muted = !video.muted;
+      // Unmuting at zero would be silent, so restore a sensible level.
+      if (!video.muted && video.volume === 0) video.volume = 0.8;
+      if (!video.muted) wakeForSound();
+      paintVolume();
+    });
+    volume.addEventListener("input", () => {
+      const level = Number(volume.value) / 100;
+      video.volume = level;
+      video.muted = level === 0;
+      if (level > 0) wakeForSound();
+      paintVolume();
+    });
+    video.addEventListener("volumechange", paintVolume);
+    paintVolume();
+
+    /* Full screen — the player element, so the controls come along;
+       iOS Safari only allows the video itself. */
+    full.addEventListener("click", () => {
+      const v = video as HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (player.requestFullscreen) player.requestFullscreen();
+      else v.webkitEnterFullscreen?.();
+    });
+  }
+</script>

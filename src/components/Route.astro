@@ -1,0 +1,142 @@
+---
+/**
+ * Route section, ported from the full build and extended with the live
+ * MapLibre flyover.
+ *
+ * The official artwork stays the primary reference — it carries the U-turn
+ * numbering, hydration points and intermediate cut-offs that runners
+ * actually need — with the animated map underneath it as the "what does
+ * this feel like" layer for the 21K.
+ */
+import { categories } from "../data/event";
+import RouteMap from "./RouteMap.astro";
+import ScatterIcons from "./ScatterIcons.astro";
+---
+
+<section
+  id="route"
+  class="pattern pattern--fade pattern--soft relative bg-cream py-[150px] max-[991px]:py-[120px] max-[479px]:py-[96px]"
+>
+  <ScatterIcons variant="e" opacity={0.32} />
+
+  <div class="relative z-[1] mx-auto w-full max-w-[1400px] px-6 max-[479px]:px-4">
+    {/* Header */}
+    <div data-reveal class="mb-12 flex flex-col items-center gap-5 text-center">
+      <div
+        class="flex h-8 items-center justify-center rounded-pill border border-aqua bg-aqua/15 px-5 font-mono text-[13px] font-medium tracking-[1.5px] text-navy-ink uppercase"
+      >
+        Route map
+      </div>
+      <h2 class="headline m-0 font-display text-navy-ink uppercase">
+        Over the <span class="script feather-text">CCLEX</span> at sunrise
+      </h2>
+      <p class="m-0 max-w-[62ch] text-[18px] leading-[1.6] text-navy-ink/85">
+        Cebu City, the Municipality of Cordova and CCLEX Management signed a
+        memorandum putting the Cebu&ndash;Cordova Link Expressway into the
+        official 2027 route. The 42K and 21K cross the longest and tallest
+        bridge in the Philippines.
+      </p>
+    </div>
+
+    {/* Official artwork, per distance */}
+    <div
+      data-reveal
+      role="tablist"
+      aria-label="Official route maps by distance"
+      class="mb-6 flex flex-wrap items-center justify-center gap-2"
+    >
+      {
+        categories.map((cat, i) => (
+          <button
+            type="button"
+            role="tab"
+            data-route-tab={cat.id}
+            aria-selected={i === 1 ? "true" : "false"}
+            aria-controls={`route-panel-${cat.id}`}
+            class:list={[
+              "cursor-pointer rounded-pill px-6 py-2 type-h5 font-condensed transition-colors duration-200",
+              i === 1
+                ? "bg-gold text-white"
+                : "bg-navy-ink/8 text-navy-ink/60 hover:bg-navy-ink/15 hover:text-navy-ink",
+            ]}
+          >
+            {cat.distance}
+          </button>
+        ))
+      }
+    </div>
+
+    {/* Live 21K flyover — only the 21K course is traced for the live map,
+        so it is shown while the 21K tab is selected and hidden otherwise. */}
+    <div data-reveal class="mb-6" data-route-live>
+      <RouteMap />
+      <p
+        class="mt-3 text-center font-mono text-[12px] tracking-[1px] text-navy-ink/45 uppercase"
+      >
+        21K course flyover &middot; Periko Rd &rarr; SM Seaside &rarr; CCLEX toll plaza &rarr; back
+      </p>
+    </div>
+
+    <div data-reveal class="overflow-hidden rounded-2xl bg-navy-950 p-2">
+      {
+        categories.map((cat, i) => (
+          <div
+            role="tabpanel"
+            id={`route-panel-${cat.id}`}
+            data-route-panel={cat.id}
+            hidden={i !== 1}
+          >
+            <img
+              src={cat.route}
+              alt={`Official ${cat.distance} route map for the Cebu Marathon 2027`}
+              loading="lazy"
+              width="1600"
+              height="900"
+              class="block w-full rounded-xl"
+            />
+            <div class="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
+              <span class="type-h4 font-display text-bone uppercase">
+                {cat.distance} &mdash; {cat.name}
+              </span>
+              <span class="font-mono text-[13px] tracking-[1px] text-bone-64 uppercase">
+                Gun start {cat.gunStart} &middot; cut-off {cat.cutoff}
+              </span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Route tabs — plain show/hide, one panel at a time.
+  const tabs = document.querySelectorAll<HTMLButtonElement>("[data-route-tab]");
+  const panels = document.querySelectorAll<HTMLElement>("[data-route-panel]");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const id = tab.dataset.routeTab;
+
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.setAttribute("aria-selected", String(active));
+        t.classList.toggle("bg-gold", active);
+        t.classList.toggle("text-white", active);
+        t.classList.toggle("bg-navy-ink/8", !active);
+        t.classList.toggle("text-navy-ink/60", !active);
+      });
+
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.routePanel !== id;
+      });
+
+      const live = document.querySelector<HTMLElement>("[data-route-live]");
+      if (live) {
+        live.hidden = id !== "21k";
+        // The map sized itself while hidden may be stale; nudge it to re-measure.
+        if (!live.hidden) window.dispatchEvent(new Event("resize"));
+      }
+    });
+  });
+</script>

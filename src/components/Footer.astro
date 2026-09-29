@@ -1,0 +1,191 @@
+---
+/**
+ * BYQ Supply — "Footer with Newsletter and Navigation" (babka-footer-5)
+ * https://app.byq.supply/sections/babka-footer-5
+ *
+ * Preserved: the dark ink field, the two-zone top grid with a newsletter
+ * headline plus inline pill-button subscribe form on the left and label-led
+ * link columns on the right, the oversized viewport-relative wordmark
+ * acting as a visual divider, and the bottom bar splitting copyright from a
+ * small cluster of links.
+ *
+ * Adapted: the wordmark is the race name, the link columns follow the
+ * page's own anchors, and the closing bar carries the organiser and
+ * beneficiary credit the event is required to show.
+ */
+import { event, organisers } from "../data/event";
+
+const columns = [
+  {
+    label: "Your race",
+    links: [
+      { label: "Distances", href: "#distances" },
+      { label: "Route & kit", href: "#race" },
+      { label: "By the numbers", href: "#numbers" },
+      { label: "FAQ", href: "#faq" },
+    ],
+  },
+  {
+    label: "Official",
+    links: [
+      { label: "Register", href: event.registrationUrl, external: true },
+      { label: "Facebook", href: event.facebookUrl, external: true },
+      { label: "Become a partner", href: `mailto:${event.partnerEmail}` },
+      { label: "Contact", href: `mailto:${event.infoEmail}` },
+    ],
+  },
+];
+---
+
+<footer class="pattern pattern--invert relative z-[1] w-full overflow-hidden bg-navy-950">
+  <div class="feather-rule h-1 w-full"></div>
+
+  <div class="px-8 pt-20 max-[767px]:px-5 max-[767px]:pt-14">
+    <div class="mx-auto w-full max-w-[1400px]">
+      {/* Top grid */}
+      <div
+        class="grid grid-cols-[1fr_auto] items-start gap-16 max-[991px]:grid-cols-1 max-[991px]:gap-12"
+      >
+        {/* Brand — the full lockup, larger, with a one-line sign-off. The
+            newsletter form is gone: it posted nowhere. */}
+        <div class="flex max-w-[440px] flex-col items-start gap-5">
+          <img
+            src="/images/logo-cli-white.png"
+            alt="Cebu Marathon 2027"
+            width="720"
+            height="279"
+            loading="lazy"
+            class="h-[112px] w-auto max-[767px]:h-[88px]"
+          />
+          <p class="m-0 text-[18px] leading-[1.6] text-bone-64">
+            Sunday, 10 January 2027 &middot; SM Seaside City Cebu and the CCLEX.
+          </p>
+        </div>
+
+        {/* Link columns */}
+        <nav
+          aria-label="Footer"
+          class="flex items-start gap-20 max-[991px]:w-full max-[767px]:flex-wrap max-[767px]:gap-12"
+        >
+          {
+            columns.map((column) => (
+              <div class="flex flex-none flex-col gap-5 max-[991px]:flex-1">
+                <div class="font-mono text-[12px] tracking-[1.5px] text-bone-40 uppercase">
+                  {column.label}
+                </div>
+                <div class="flex flex-col items-start gap-2.5">
+                  {column.links.map((link) => (
+                    <a
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener" : undefined}
+                      class="text-[18px] leading-5 text-bone-88 no-underline transition-colors duration-200 hover:text-gold"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </nav>
+      </div>
+
+      {/* Organisers and beneficiaries, as on the live site's footer */}
+      <div class="mt-16 grid grid-cols-2 gap-12 border-t border-white/15 pt-10 max-[767px]:grid-cols-1 max-[767px]:gap-10">
+        <div>
+          <div class="mb-5 font-display text-[18px] font-black tracking-[0.02em] text-bone uppercase">
+            Organised by
+          </div>
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+            <img
+              src={organisers.organisedBy.logo}
+              alt={organisers.organisedBy.name}
+              width={organisers.organisedBy.w}
+              height={organisers.organisedBy.h}
+              loading="lazy"
+              class="h-[58px] w-auto"
+            />
+            <span class="text-[16px] leading-[1.3] text-bone-64">in partnership<br />with</span>
+            <img
+              src={organisers.partner.logo}
+              alt={organisers.partner.name}
+              width={organisers.partner.w}
+              height={organisers.partner.h}
+              loading="lazy"
+              class="h-[64px] w-auto"
+            />
+          </div>
+        </div>
+        <div>
+          <div class="mb-5 font-display text-[18px] font-black tracking-[0.02em] text-bone uppercase">
+            Event beneficiaries
+          </div>
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+            {
+              organisers.beneficiaries.map((b) => (
+                <img
+                  src={b.logo}
+                  alt={b.name}
+                  width={b.w}
+                  height={b.h}
+                  loading="lazy"
+                  class="h-[64px] w-auto"
+                />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar — rights and credit on the left, Facebook and email
+          on the right, as on the live site. */}
+      <div
+        class="mt-12 mb-14 flex flex-wrap items-center justify-between gap-6 border-t border-white/15 pt-8"
+      >
+        <div class="flex flex-col gap-2">
+          <span class="text-[16px] text-bone">
+            &copy; Cebu Marathon 2027. All rights reserved.
+          </span>
+          <span class="max-w-[60ch] text-[14px] leading-[1.5] text-bone-40">
+            Held for the benefit of the Cebu City Sports Commission and the
+            Sinulog Foundation, Inc. Sections by BYQ Supply.
+          </span>
+        </div>
+        <div class="flex items-center gap-4">
+          <a
+            href={event.facebookUrl}
+            target="_blank"
+            rel="noopener"
+            aria-label="Cebu Marathon on Facebook"
+            class="footer-social"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6" fill="currentColor">
+              <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07Z" />
+            </svg>
+          </a>
+          <a
+            href={`mailto:${event.infoEmail}`}
+            aria-label={`Email ${event.infoEmail}`}
+            class="footer-social"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+              <rect x="2.5" y="5" width="19" height="14" rx="1.5" />
+              <path d="m3 6 9 7 9-7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Oversized wordmark */}
+  {/* Oversized wordmark, kept very faint so the footer copy stays first */}
+  <img
+    src="/images/wordmark-cm27-navy-trim.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+    class="pointer-events-none w-full translate-y-[14%] px-8 select-none"
+  />
+</footer>

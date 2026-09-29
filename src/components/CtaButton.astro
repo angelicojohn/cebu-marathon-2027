@@ -1,0 +1,105 @@
+---
+/**
+ * The primary call to action.
+ *
+ * A gold pill carrying the tribal pattern, with the Sinulog feathers
+ * hidden behind it. On hover the feathers pop out and fan to either side,
+ * then settle into a slow sway, and a few stars twinkle around them.
+ *
+ * The feathers are cut from the supplied Leaves.svg: it exported as 575
+ * flat paths with no grouping, so they were clustered back into individual
+ * feathers by colour and position. Four are used here and mirrored for the
+ * opposite side, rather than shipping all seven.
+ *
+ * Everything decorative is aria-hidden and pointer-events: none, so the
+ * button is still just a link to a screen reader and the feathers never
+ * swallow a click.
+ */
+interface Props {
+  href: string;
+  label: string;
+  /** "lg" for the hero, "sm" for the navigation bar. */
+  size?: "lg" | "sm";
+  /** Stretch the pill to its container (the mobile menu). */
+  full?: boolean;
+  /** Set the label in caps (the hero). */
+  upper?: boolean;
+  class?: string;
+  newTab?: boolean;
+}
+
+const {
+  href,
+  label,
+  size = "lg",
+  full = false,
+  upper = false,
+  class: klass = "",
+  newTab = true,
+} = Astro.props;
+
+/* The fan. Each feather is anchored behind one end of the pill and swings
+   out along its own angle, the way the artwork spreads from the two ends
+   rather than from all round the button. `rot` is the direction it points,
+   `k` how far along that line it travels. */
+const feathers = [
+  { src: "/images/leaves/feather-blue.svg", side: "l", rot: -38, k: 1, scale: 0.94, delay: 60 },
+  { src: "/images/leaves/feather-green.svg", side: "l", rot: -72, k: 1.15, scale: 1.02, delay: 0 },
+  { src: "/images/leaves/feather-pink.svg", side: "l", rot: -108, k: 1, scale: 0.9, delay: 90 },
+  { src: "/images/leaves/feather-purple.svg", side: "l", rot: -142, k: 0.8, scale: 0.78, delay: 140 },
+  { src: "/images/leaves/feather-blue.svg", side: "r", rot: 38, k: 1, scale: 0.94, delay: 80 },
+  { src: "/images/leaves/feather-green.svg", side: "r", rot: 72, k: 1.15, scale: 1.02, delay: 20 },
+  { src: "/images/leaves/feather-pink.svg", side: "r", rot: 108, k: 1, scale: 0.9, delay: 110 },
+  { src: "/images/leaves/feather-purple.svg", side: "r", rot: 142, k: 0.8, scale: 0.78, delay: 160 },
+];
+
+/* Stars that twinkle once the feathers are out. */
+const stars = [
+  { x: -62, y: -30, s: 1, delay: 260 },
+  { x: -46, y: 32, s: 0.7, delay: 520 },
+  { x: 64, y: -24, s: 0.85, delay: 380 },
+  { x: 48, y: 34, s: 0.65, delay: 640 },
+  { x: -78, y: 6, s: 0.55, delay: 760 },
+  { x: 80, y: 12, s: 0.6, delay: 880 },
+];
+---
+
+<span class:list={["cta", `cta--${size}`, full && "cta--full", upper && "cta--upper", klass]}>
+  <span class="cta__flora" aria-hidden="true">
+    {
+      feathers.map((f) => (
+        <span
+          class:list={["cta__feather", `cta__feather--${f.side}`]}
+          style={`--rot:${f.rot}deg;--k:${f.k};--s:${f.scale};--d:${f.delay}ms`}
+        >
+          <span class="cta__feather-sway">
+            <img src={f.src} alt="" width="120" height="160" loading="lazy" decoding="async" />
+            <svg class="cta__glint" viewBox="0 0 24 24">
+              <path d="M12 0c.9 6.4 4.7 10.2 12 12-7.3 1.8-11.1 5.6-12 12-.9-6.4-4.7-10.2-12-12C7.3 10.2 11.1 6.4 12 0Z" />
+            </svg>
+          </span>
+        </span>
+      ))
+    }
+    {
+      stars.map((s) => (
+        <svg
+          class="cta__star"
+          style={`--x:${s.x}%;--y:${s.y}%;--s:${s.s};--d:${s.delay}ms`}
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 0c.9 6.4 4.7 10.2 12 12-7.3 1.8-11.1 5.6-12 12-.9-6.4-4.7-10.2-12-12C7.3 10.2 11.1 6.4 12 0Z" />
+        </svg>
+      ))
+    }
+  </span>
+
+  <a
+    href={href}
+    class="cta__button"
+    target={newTab ? "_blank" : undefined}
+    rel={newTab ? "noopener" : undefined}
+  >
+    <span class="cta__label">{label}</span>
+  </a>
+</span>

@@ -1,0 +1,125 @@
+---
+import "../styles/global.css";
+import { event, categories } from "../data/event";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Cebu Marathon 2027 — 10 January 2027 | 42K · 21K · 10K · 5K",
+  description = "The AIMS-certified Cebu Marathon runs on 10 January 2027 from SM Seaside City Cebu, over the CCLEX and back. Presented by Cebu Landmasters. 42K ₱2,999, 21K ₱2,799, 10K and 5K ₱1,499.",
+} = Astro.props;
+
+const canonical = event.siteUrl + "/";
+const ogImage = `${event.siteUrl}/images/brand-cover.webp`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsEvent",
+  name: "Cebu Marathon 2027",
+  alternateName: "CM27",
+  description,
+  sport: "Marathon",
+  startDate: event.startsAt,
+  endDate: event.endsAt,
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  image: [ogImage],
+  url: canonical,
+  location: {
+    "@type": "Place",
+    name: event.venue,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: event.venueLocality,
+      addressRegion: event.venueRegion,
+      addressCountry: event.venueCountry,
+    },
+  },
+  organizer: { "@type": "Organization", name: "DJT Events", url: canonical },
+  sponsor: { "@type": "Organization", name: event.presenter },
+  offers: categories.map((c) => ({
+    "@type": "Offer",
+    name: `${c.distance} ${c.name}`,
+    price: c.price,
+    priceCurrency: "PHP",
+    availability: "https://schema.org/InStock",
+    url: event.registrationUrl,
+    validFrom: "2026-08-15T12:00:00+08:00",
+    validThrough: "2026-11-15T23:59:59+08:00",
+  })),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#022056" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Cebu Marathon 2027" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/notosansjp-latin.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/dirtylane-400.woff2"
+      crossorigin
+    />
+    <link rel="preload" as="image" href="/images/hero-2027-poster.jpg" />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a
+      href="#distances"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-gold focus:px-4 focus:py-2 focus:font-body focus:text-sm focus:font-semibold focus:text-navy-ink"
+    >
+      Skip to race categories
+    </a>
+
+    <slot />
+
+    <script>
+      // Shared entrance observer for every [data-reveal] node. The BYQ
+      // sources each ship their own useRef + IntersectionObserver pair per
+      // block; in Astro one observer covers the whole page.
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            el.style.transitionDelay = el.dataset.revealDelay ?? "0ms";
+            el.classList.add("is-visible");
+            observer.unobserve(el);
+          }
+        },
+        { threshold: 0.1 },
+      );
+
+      document
+        .querySelectorAll<HTMLElement>("[data-reveal]")
+        .forEach((el) => revealObserver.observe(el));
+    </script>
+  </body>
+</html>

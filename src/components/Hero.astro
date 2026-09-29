@@ -1,0 +1,187 @@
+---
+/**
+ * BYQ Supply — "Hero with Background Video" (for-human-hero-1)
+ * https://app.byq.supply/sections/for-human-hero-1
+ *
+ * Preserved: the 100svh section with an autoplay/loop/muted background
+ * video, content pinned to the bottom edge, the flex row that pushes a
+ * label-plus-H1 block to the left and a body-plus-buttons block to the
+ * right at `items-end`, the rounded label badge, the light/outline button
+ * pair with backdrop blur, and the two staggered entrance animations
+ * (heading first, right block 200ms behind it).
+ *
+ * Adapted: the countdown row is added under the right block — a race has a
+ * date, and the source's spare right column is where it belongs. Section
+ * height drops to auto on mobile landscape exactly as the source does.
+ */
+import { event } from "../data/event";
+import CtaButton from "./CtaButton.astro";
+---
+
+<section
+  id="top"
+  class="relative z-[1] flex h-[90vh] min-h-[640px] flex-row items-stretch justify-between overflow-hidden max-[767px]:h-auto max-[479px]:h-[90vh]"
+>
+  <div
+    class="relative z-[1] flex h-full w-full flex-row items-end justify-start pt-20 pb-20 max-[991px]:pt-[110px] max-[767px]:pt-[130px] max-[479px]:pb-12"
+  >
+    <video
+      data-hero-video
+      class="absolute inset-0 h-full w-full object-cover"
+      poster="/images/hero-2027-poster.jpg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <source src="/video/hero-2027.mp4" type="video/mp4" />
+    </video>
+
+    {/* Scrim — the source runs a plain tint; this one adds the brand navy */}
+    <div class="absolute inset-0 bg-navy-950/55"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent"
+    >
+    </div>
+
+    <div class="relative z-[2] mx-auto w-full max-w-[1400px] px-8 max-[767px]:px-5">
+      <div
+        class="flex h-full w-full flex-row flex-wrap items-end justify-between gap-10 max-[479px]:gap-6"
+      >
+        {/* Left — label + heading */}
+        <div class="flex flex-col items-start justify-start gap-6">
+          <div
+            class="flex items-center gap-5"
+          >
+            <span
+              class="font-mono text-[12px] leading-[1.2] font-medium tracking-[1.5px] text-bone-64 uppercase"
+            >
+              Presented by
+            </span>
+            <span class="h-8 w-px flex-none bg-white/25"></span>
+            <img
+              src="/images/sponsor-cebu-landmasters-white.png"
+              alt={event.presenter}
+              width="900"
+              height="220"
+              class="h-16 w-auto max-[479px]:h-12"
+            />
+          </div>
+
+          <div class="flex max-w-[820px] flex-wrap max-[767px]:max-w-[460px]">
+            <h1
+              data-reveal
+              class="display-shadow relative z-[1] m-0 type-h1 font-display text-bone uppercase"
+            >
+              Conquer <span class="script feather-text">Cebu&rsquo;s</span>
+              {/* Held together so the line never breaks between the two
+                  words, at any width. */}
+              <span class="whitespace-nowrap">biggest race</span>
+            </h1>
+          </div>
+        </div>
+
+        {/* Right — body, buttons, countdown */}
+        <div
+          data-reveal
+          data-reveal-delay="200ms"
+          class="flex max-w-[460px] flex-col items-start justify-start gap-6 max-[767px]:max-w-[356px]"
+        >
+          <p class="m-0 text-[23px] leading-[140%] text-bone max-[479px]:text-[19px]">
+            AIMS-certified, over the longest bridge in the Philippines, and
+            finished to the drums of <strong class="font-bold">Sinulog</strong>.{" "}
+            <strong class="font-bold">10 January 2027.</strong>
+          </p>
+
+          <div
+            data-countdown
+            class="flex items-end gap-3"
+            aria-label="Time until race day"
+          >
+            {
+              ["days", "hours", "mins", "secs"].map((unit) => (
+                <div class="flex flex-col items-center">
+                  <span
+                    data-unit={unit}
+                    class="min-w-[58px] rounded-lg border border-white/20 bg-navy-950/40 px-3 py-2 text-center type-stat-sm font-condensed text-bone tabular-nums backdrop-blur-[16px] max-[479px]:min-w-[50px]"
+                  >
+                    --
+                  </span>
+                  <span class="mt-1.5 font-mono text-[12px] tracking-[1.5px] text-bone-64 uppercase">
+                    {unit}
+                  </span>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="flex flex-row items-center justify-start gap-3 max-[479px]:w-full">
+            <div class="max-[479px]:flex-1">
+              <CtaButton href={event.registrationUrl} label="Register" size="lg" upper />
+            </div>
+            <a
+              href="#distances"
+              class="flex items-center justify-center rounded-pill border border-white/35 bg-white/15 px-7 py-3 font-body text-[18px] leading-[150%] font-bold tracking-[-0.01em] text-white uppercase no-underline backdrop-blur-[16px] transition-colors duration-200 hover:bg-white/25 max-[479px]:flex-1"
+            >
+              Distances
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const target = new Date("2027-01-10T00:00:00+08:00").getTime();
+  const root = document.querySelector<HTMLElement>("[data-countdown]");
+
+  if (root) {
+    const cell = (u: string) => root.querySelector<HTMLElement>(`[data-unit='${u}']`);
+    const cells = {
+      days: cell("days"),
+      hours: cell("hours"),
+      mins: cell("mins"),
+      secs: cell("secs"),
+    };
+    const pad = (n: number) => String(n).padStart(2, "0");
+
+    const tick = () => {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        Object.values(cells).forEach((c) => c && (c.textContent = "00"));
+        return;
+      }
+      if (cells.days) cells.days.textContent = String(Math.floor(diff / 86400000));
+      if (cells.hours) cells.hours.textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      if (cells.mins) cells.mins.textContent = pad(Math.floor((diff % 3600000) / 60000));
+      if (cells.secs) cells.secs.textContent = pad(Math.floor((diff % 60000) / 1000));
+    };
+
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  // Pause the loop when the hero leaves the viewport, and honour
+  // prefers-reduced-motion by leaving the poster frame in place.
+  const video = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (video && reduced.matches) {
+    video.removeAttribute("autoplay");
+    video.pause();
+  } else if (video) {
+    new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        }
+      },
+      { threshold: 0.05 },
+    ).observe(video);
+  }
+</script>

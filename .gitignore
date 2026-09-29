@@ -1,0 +1,29 @@
+# Dependencies and build output
+node_modules/
+dist/
+.astro/
+
+# Secrets — the Mapbox token lives here; see .env.example
+.env
+.env.*
+!.env.example
+
+# Raw source media — edited exports and working files, not site assets
+0929/
+Updated Hero Video/
+.__capcut_export_temp_folder_*/
+Race Kit Entitlements/
+bg pattern assets/
+
+# Over GitHub's 100MB limit; a compressed version will replace it
+public/video/hero-2027.mp4
+
+# Design source files that are not served by the site
+*.otf
+Leaves.svg
+Button.svg
+image.svg
+
+# OS / editor noise
+.DS_Store
+*.log

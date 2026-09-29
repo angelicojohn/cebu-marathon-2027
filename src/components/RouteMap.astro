@@ -1,0 +1,546 @@
+---
+/**
+ * Animated 21K course, on Mapbox GL JS.
+ *
+ * Modelled on Mapbox's free-camera-path example:
+ * https://docs.mapbox.com/mapbox-gl-js/example/free-camera-path/
+ *
+ * Everything on screen derives from a single normalised `progress` (0→1) —
+ * revealed trail, runner marker, camera position and camera target all read
+ * from it, so they cannot drift out of sync.
+ *
+ * Needs `PUBLIC_MAPBOX_TOKEN` (a public `pk.*` token). Without one the
+ * section falls back to the official static route map rather than breaking.
+ * Any runtime failure is surfaced on the map itself, so a blank canvas is
+ * never the only symptom.
+ */
+const token = import.meta.env.PUBLIC_MAPBOX_TOKEN ?? "";
+const hasToken = token.length > 0;
+---
+
+<div class="relative overflow-hidden rounded-2xl bg-navy-950">
+  <div
+    id="marathon-map"
+    data-token={token}
+    class="h-[620px] w-full max-[767px]:h-[440px]"
+    role="img"
+    aria-label="Animated map of the Cebu Marathon 2027 21K course, from SM Seaside City Cebu out to the CCLEX toll plaza and back"
+  >
+  </div>
+
+  {
+    hasToken && (
+      <>
+        {/* Controls */}
+        <div class="absolute top-4 right-4 left-4 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            data-map-play
+            class="flex h-10 flex-none items-center justify-center rounded-pill bg-gold px-5 font-body text-[15px] font-bold whitespace-nowrap text-white transition-colors hover:bg-gold-bright"
+          >
+            Play flyover
+          </button>
+          <button
+            type="button"
+            data-map-reset
+            class="flex h-10 flex-none items-center justify-center rounded-pill border border-white/25 bg-navy-950/70 px-5 font-body text-[15px] font-bold whitespace-nowrap text-white backdrop-blur-md transition-colors hover:bg-navy-950"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            data-map-inspect
+            class="flex h-10 flex-none items-center justify-center rounded-pill border border-white/25 bg-navy-950/70 px-5 font-body text-[15px] font-bold whitespace-nowrap text-white backdrop-blur-md transition-colors hover:bg-navy-950"
+          >
+            Inspect route
+          </button>
+        </div>
+
+        {/* Live readout */}
+        <div class="pointer-events-none absolute right-4 bottom-4 rounded-xl border border-white/15 bg-navy-950/80 px-5 py-3 backdrop-blur-md">
+          <div class="font-mono text-[10px] tracking-[1.5px] text-bone-40 uppercase">
+            Distance covered
+          </div>
+          <div class="type-stat-sm font-condensed text-bone">
+            <span data-map-distance>0.00</span>
+            <span class="text-bone-40"> / 21.1 km</span>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  {/* Static map: covers the canvas until Mapbox reports `load`, and stays
+      put if it never does — so a failure degrades to the official artwork. */}
+  <div
+    data-map-fallback
+    class="absolute inset-0 transition-opacity duration-500"
+  >
+    <img
+      src="/images/route-21k.webp"
+      alt="Official 21K route map for the Cebu Marathon 2027"
+      width="1600"
+      height="900"
+      class="h-full w-full object-cover"
+    />
+    <div
+      data-map-status
+      class="absolute inset-x-0 bottom-0 bg-navy-950/85 px-6 py-4 backdrop-blur-sm"
+    >
+      <p class="m-0 text-[16px] leading-[1.5] text-bone-64">
+        {
+          hasToken ? (
+            <span>Loading the interactive course&hellip;</span>
+          ) : (
+            <span>
+              <strong class="font-semibold text-bone">Interactive flyover disabled.</strong> Set{" "}
+              <code class="font-mono text-gold">PUBLIC_MAPBOX_TOKEN</code> to enable it.
+            </span>
+          )
+        }
+      </p>
+    </div>
+  </div>
+</div>
+
+{
+  hasToken && (
+    <script>
+      import {
+        CONFIG,
+        createMarathonRoute,
+        buildDistanceTable,
+        getPointAlongRoute,
+        sliceRoute,
+        bearingBetween,
+        marathonMarkers,
+        type LngLat,
+      } from "../lib/marathonRoute";
+
+      const container = document.getElementById("marathon-map");
+      const fallback = document.querySelector<HTMLElement>("[data-map-fallback]");
+      const status = document.querySelector<HTMLElement>("[data-map-status]");
+
+      /** Put the reason on screen — a blank canvas is not a useful symptom. */
+      function fail(message: string) {
+        console.error("[route map]", message);
+        if (status) {
+          status.innerHTML = `<p class="m-0 text-[16px] leading-[1.5] text-bone-64"><strong class="font-semibold text-bone">Interactive map unavailable.</strong> ${message}</p>`;
+        }
+      }
+
+      /**
+       * mapbox-gl is ~1.8MB. Loading it up front would make every visitor pay
+       * for a map most never scroll to, so it is dynamically imported the
+       * first time the section comes within a viewport of the fold.
+       */
+      function whenNearViewport(el: Element, run: () => void) {
+        new IntersectionObserver(
+          (entries, obs) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              obs.disconnect();
+              run();
+            }
+          },
+          { rootMargin: "100% 0px" },
+        ).observe(el);
+      }
+
+      async function initMap(el: HTMLElement) {
+        let mapboxgl: typeof import("mapbox-gl").default;
+        try {
+          const mod = await import("mapbox-gl");
+          await import("mapbox-gl/dist/mapbox-gl.css");
+          mapboxgl = mod.default;
+        } catch (err) {
+          return fail("Could not load the Mapbox library.");
+        }
+
+        if (!mapboxgl.supported?.()) {
+          return fail("This browser does not support WebGL.");
+        }
+
+        mapboxgl.accessToken = el.dataset.token ?? "";
+
+        /* ---------------------------------------------------------------
+           1. Map initialisation
+        --------------------------------------------------------------- */
+        const route = createMarathonRoute();
+        const coords = route.geometry.coordinates as LngLat[];
+        const table = buildDistanceTable(coords);
+
+        const OVERVIEW = {
+          center: [123.897, 10.262] as [number, number],
+          zoom: 11.6,
+          pitch: 65,
+          bearing: -18,
+        };
+
+        const map = new mapboxgl.Map({
+          container: el,
+          // Standard carries 3D buildings, real atmosphere and light presets,
+          // which dark-v11 does not. Terrain is added on style.load below.
+          style: "mapbox://styles/mapbox/standard",
+          ...OVERVIEW,
+          antialias: true,
+          cooperativeGestures: true,
+        });
+
+        map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-left");
+
+        /* ---------------------------------------------------------------
+           1b. 3D terrain, sky and basemap configuration
+
+           Terrain has to go on `style.load`, before `load` fires, so the
+           first frame is already draped. Cebu's SRP and the CCLEX sit at sea
+           level, so exaggeration mostly buys the hills behind the city and
+           the bridge deck standing off the water — which is exactly the
+           silhouette the race artwork leans on.
+        --------------------------------------------------------------- */
+        map.on("style.load", () => {
+          map.addSource("mapbox-dem", {
+            type: "raster-dem",
+            url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+            tileSize: 512,
+            maxzoom: 14,
+          });
+          map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+
+          // Standard is configured through properties rather than by editing
+          // layers. The night preset plus these colours match the official
+          // course maps: royal-blue water, deep navy ground, white roads —
+          // so the live map and the route artwork read as one system. The
+          // label switches strip the POI noise the brief asked to avoid.
+          //
+          // Each property is set on its own: the set Standard supports grows
+          // between releases, and one it does not know should not stop the
+          // rest from applying.
+          const basemap: Record<string, string | boolean> = {
+            lightPreset: "night",
+            colorWater: "#2336c0",
+            colorLand: "#0b1450",
+            colorGreenspace: "#0f1b5e",
+            // Land-use tints (the peach and beige zones) flattened into the
+            // navy, as on the course maps, where only roads and water read.
+            colorCommercial: "#111c62",
+            colorEducation: "#111c62",
+            colorIndustrial: "#101a5a",
+            colorMedical: "#111c62",
+            colorBuildings: "#1c2b8c",
+            colorMotorways: "#ffffff",
+            colorTrunks: "#f2f5ff",
+            colorRoads: "#d9e1ff",
+            colorAdminBoundaries: "#3d4fb8",
+            colorPlaceLabels: "#c9d3ff",
+            showPointOfInterestLabels: false,
+            showTransitLabels: false,
+            showRoadLabels: false,
+          };
+          for (const [key, value] of Object.entries(basemap)) {
+            try {
+              map.setConfigProperty("basemap", key, value);
+            } catch {
+              /* not supported by this style version — skip it */
+            }
+          }
+        });
+
+        map.on("error", (e) => {
+          const msg = e?.error?.message ?? "Unknown Mapbox error.";
+          if (/access token|Unauthorized|401/i.test(msg)) {
+            fail("The Mapbox token was rejected — check it is valid and that this domain is allowed.");
+          } else {
+            console.warn("[route map]", msg);
+          }
+        });
+
+        /* ---------------------------------------------------------------
+           2. Route layers — white outline under a bright red trail
+        --------------------------------------------------------------- */
+        const animatedRoute: GeoJSON.Feature<GeoJSON.LineString> = {
+          type: "Feature",
+          properties: {},
+          geometry: { type: "LineString", coordinates: [] },
+        };
+
+        function createRouteLayers() {
+          // `slot: "top"` puts the trail above Standard's 3D buildings, and
+          // emissive-strength keeps it luminous under the night lighting
+          // instead of being shaded down like a ground surface.
+          const onTop = { slot: "top" as const };
+
+          // Whole course, dimmed — shows where the runner is headed next.
+          map.addSource("marathon-route", { type: "geojson", data: route });
+          map.addLayer({
+            ...onTop,
+            id: "route-ghost",
+            type: "line",
+            source: "marathon-route",
+            layout: { "line-cap": "round", "line-join": "round" },
+            paint: {
+              "line-color": "#ffffff",
+              "line-width": CONFIG.routeOutlineWidth * 0.5,
+              "line-opacity": 0.18,
+              "line-emissive-strength": 0.8,
+            },
+          });
+
+          // Revealed trail: white outline, red line on top.
+          map.addSource("marathon-animated", { type: "geojson", data: animatedRoute });
+          map.addLayer({
+            ...onTop,
+            id: "route-outline",
+            type: "line",
+            source: "marathon-animated",
+            layout: { "line-cap": "round", "line-join": "round" },
+            paint: {
+              "line-color": "#ffffff",
+              "line-width": CONFIG.routeOutlineWidth,
+              "line-emissive-strength": 1,
+            },
+          });
+          map.addLayer({
+            ...onTop,
+            id: "route-line",
+            type: "line",
+            source: "marathon-animated",
+            layout: { "line-cap": "round", "line-join": "round" },
+            paint: {
+              "line-color": "#e53e45",
+              "line-width": CONFIG.routeWidth,
+              "line-emissive-strength": 1,
+            },
+          });
+        }
+
+        /* ---------------------------------------------------------------
+           3. Markers
+        --------------------------------------------------------------- */
+        function pin(colour: string, label: string, size = 22) {
+          const node = document.createElement("div");
+          node.style.cssText = `width:${size}px;height:${size}px;border-radius:50%;background:${colour};border:2.5px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.55)`;
+          node.title = label;
+          node.setAttribute("aria-label", label);
+          return node;
+        }
+
+        function createRouteMarkers() {
+          // Start and finish sit metres apart in the same Periko Rd zone, so
+          // they are deliberately different shapes and colours — and anchored
+          // to opposite sides — to stay tellable apart at any zoom.
+          const startEl = pin("#8ec951", "Start", 28);
+          startEl.style.borderWidth = "4px";
+          new mapboxgl.Marker({ element: startEl, anchor: "bottom" })
+            .setLngLat(marathonMarkers.start)
+            .setPopup(new mapboxgl.Popup({ offset: 20 }).setText("START — 10.280821, 123.879987"))
+            .addTo(map);
+
+          const finishEl = pin("#d21b53", "Finish", 28);
+          finishEl.style.borderWidth = "4px";
+          finishEl.style.borderStyle = "double";
+          new mapboxgl.Marker({ element: finishEl, anchor: "top" })
+            .setLngLat(marathonMarkers.finish)
+            .setPopup(new mapboxgl.Popup({ offset: 20 }).setText("FINISH — 10.280821, 123.879987"))
+            .addTo(map);
+
+          new mapboxgl.Marker({ element: pin("#f5a623", "U-Turn — CCLEX toll plaza", 24) })
+            .setLngLat(marathonMarkers.uTurn)
+            .setPopup(new mapboxgl.Popup({ offset: 16 }).setText("U-TURN — 10.264556, 123.939153"))
+            .addTo(map);
+
+          new mapboxgl.Marker({ element: pin("#ac499b", "Perico Road", 16) })
+            .setLngLat(marathonMarkers.perico)
+            .setPopup(new mapboxgl.Popup({ offset: 14 }).setText("Perico Road — passed twice"))
+            .addTo(map);
+
+          new mapboxgl.Marker({ element: pin("#4a67a6", "CCLEX Toll Plaza", 16) })
+            .setLngLat(marathonMarkers.tollPlaza)
+            .setPopup(new mapboxgl.Popup({ offset: 14 }).setText("CCLEX Toll Plaza — passed twice"))
+            .addTo(map);
+
+          marathonMarkers.hydration.forEach((c, i) =>
+            new mapboxgl.Marker({ element: pin("#4ac3d4", `Hydration station ${i + 1}`, 13) })
+              .setLngLat(c)
+              .addTo(map),
+          );
+        }
+
+        /* ---------------------------------------------------------------
+           4. Runner marker
+        --------------------------------------------------------------- */
+        const runnerEl = document.createElement("div");
+        runnerEl.style.cssText =
+          "width:20px;height:20px;border-radius:50%;background:#fff;border:4px solid #e53e45;box-shadow:0 0 18px 5px rgba(229,62,69,.65)";
+        runnerEl.setAttribute("aria-label", "Runner position");
+        const runner = new mapboxgl.Marker({ element: runnerEl }).setLngLat(coords[0]);
+
+        /* ---------------------------------------------------------------
+           5. Per-frame updates — all driven by `progress`
+        --------------------------------------------------------------- */
+        const distanceEl = document.querySelector<HTMLElement>("[data-map-distance]");
+        let smoothedBearing: number | null = null;
+
+        function updateAnimatedTrail(progress: number) {
+          animatedRoute.geometry.coordinates = sliceRoute(coords, table, progress);
+          (map.getSource("marathon-animated") as mapboxgl.GeoJSONSource)?.setData(animatedRoute);
+        }
+
+        function updateRunner(progress: number) {
+          runner.setLngLat(getPointAlongRoute(coords, table, progress));
+          if (distanceEl) {
+            distanceEl.textContent = ((table.total * progress) / 1000).toFixed(2);
+          }
+        }
+
+        function getCameraPosition(progress: number) {
+          const here = getPointAlongRoute(coords, table, progress);
+          const ahead = getPointAlongRoute(
+            coords,
+            table,
+            Math.min(1, progress + CONFIG.cameraLookAhead),
+          );
+
+          // Smooth the heading so the two U-turns do not whip the camera round.
+          const raw = bearingBetween(here, ahead);
+          if (smoothedBearing === null) smoothedBearing = raw;
+          else {
+            const delta = ((raw - smoothedBearing + 540) % 360) - 180;
+            smoothedBearing = (smoothedBearing + delta * CONFIG.bearingSmoothing + 360) % 360;
+          }
+
+          // Sit the camera behind the runner, along the reverse of travel.
+          const back = ((smoothedBearing + 180) * Math.PI) / 180;
+          const trail = CONFIG.cameraAltitude * 0.9;
+          const lat = here[1] + (trail * Math.cos(back)) / 111320;
+          const lng =
+            here[0] + (trail * Math.sin(back)) / (111320 * Math.cos((here[1] * Math.PI) / 180));
+
+          return { position: [lng, lat] as LngLat, target: ahead };
+        }
+
+        function updateCamera(progress: number) {
+          const { position, target } = getCameraPosition(progress);
+          const camera = map.getFreeCameraOptions();
+          camera.position = mapboxgl.MercatorCoordinate.fromLngLat(
+            { lng: position[0], lat: position[1] },
+            CONFIG.cameraAltitude,
+          );
+          camera.lookAtPoint({ lng: target[0], lat: target[1] });
+          map.setFreeCameraOptions(camera);
+        }
+
+        /* ---------------------------------------------------------------
+           6. Animation loop
+        --------------------------------------------------------------- */
+        let rafId = 0;
+        let startedAt = 0;
+        let playing = false;
+
+        function frame(now: number) {
+          if (!playing) return;
+          if (!startedAt) startedAt = now;
+
+          const progress = Math.min(1, (now - startedAt) / CONFIG.animationDuration);
+          updateAnimatedTrail(progress);
+          updateRunner(progress);
+          updateCamera(progress);
+
+          if (progress < 1) {
+            rafId = requestAnimationFrame(frame);
+          } else {
+            playing = false;
+            if (CONFIG.loop) {
+              window.setTimeout(() => {
+                resetAnimation();
+                window.setTimeout(startAnimation, 900);
+              }, CONFIG.loopDelay);
+            }
+          }
+        }
+
+        function startAnimation() {
+          if (playing) return;
+          playing = true;
+          startedAt = 0;
+          rafId = requestAnimationFrame(frame);
+        }
+
+        function resetAnimation() {
+          playing = false;
+          cancelAnimationFrame(rafId);
+          startedAt = 0;
+          smoothedBearing = null;
+          updateAnimatedTrail(0);
+          updateRunner(0);
+          map.easeTo({ ...OVERVIEW, duration: 1200 });
+        }
+
+        /* ---------------------------------------------------------------
+           7. Wiring
+        --------------------------------------------------------------- */
+        map.on("load", () => {
+          createRouteLayers();
+          createRouteMarkers();
+          runner.addTo(map);
+          updateAnimatedTrail(0);
+          updateRunner(0);
+
+          // Map is up — retire the static fallback.
+          if (fallback) {
+            fallback.style.opacity = "0";
+            window.setTimeout(() => fallback.remove(), 600);
+          }
+
+          document.querySelector("[data-map-play]")?.addEventListener("click", startAnimation);
+          document.querySelector("[data-map-reset]")?.addEventListener("click", resetAnimation);
+
+          /**
+           * Inspect mode: stop the animation, draw the WHOLE course as one
+           * bold red line and frame it, so the geometry can be checked
+           * against the official artwork without waiting for the reveal.
+           * Also reachable directly with ?routedebug in the URL.
+           */
+          function inspectRoute() {
+            playing = false;
+            cancelAnimationFrame(rafId);
+            map.setPaintProperty("route-ghost", "line-color", "#ff0000");
+            map.setPaintProperty("route-ghost", "line-width", 8);
+            map.setPaintProperty("route-ghost", "line-opacity", 1);
+            updateAnimatedTrail(0);
+            updateRunner(0);
+
+            const lons = coords.map((c) => c[0]);
+            const lats = coords.map((c) => c[1]);
+            map.fitBounds(
+              [
+                [Math.min(...lons), Math.min(...lats)],
+                [Math.max(...lons), Math.max(...lats)],
+              ],
+              { padding: 70, pitch: 0, bearing: 0, duration: 1200 },
+            );
+          }
+
+          document.querySelector("[data-map-inspect]")?.addEventListener("click", inspectRoute);
+          if (new URLSearchParams(location.search).has("routedebug")) inspectRoute();
+
+          const inspecting = new URLSearchParams(location.search).has("routedebug");
+          if (!inspecting && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            new IntersectionObserver(
+              (entries, obs) => {
+                for (const e of entries) {
+                  if (!e.isIntersecting) continue;
+                  startAnimation();
+                  obs.disconnect();
+                }
+              },
+              { threshold: 0.35 },
+            ).observe(el);
+          }
+        });
+      }
+
+      if (container) whenNearViewport(container, () => initMap(container));
+    </script>
+  )
+}

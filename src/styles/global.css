@@ -1,0 +1,2168 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Typefaces
+
+   Noto Sans JP carries everything that is set in type: headings at 700,
+   body copy at 300, labels in between. It replaces the previous pairing of
+   Bebas Neue for headings and Archivo for body.
+
+   Archivo stays loaded, but only as the glyph fallback behind Noto. Noto
+   Sans JP's Latin subsets have no peso sign (U+20B1) and every price on
+   this page needs one, so Archivo's latin-ext file supplies that single
+   glyph while Noto renders the rest.
+
+   Dirtylane is the brush script in the lockup, converted from the supplied
+   .otf. It replaces Kaushan Script, which was loaded from Google Fonts —
+   nothing is fetched from a third party any more.
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-300-latin.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-300-latin-ext.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-400-latin.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-400-latin-ext.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-600-latin.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-600-latin-ext.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-700-latin.woff2") format("woff2");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-700-latin-ext.woff2") format("woff2");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Noto Sans JP carries every heading and every line of body copy. Google
+   ships it as a variable font split across ~120 subsets; the site is set in
+   English, so only the two Latin subsets are self-hosted here. One file per
+   subset covers the whole 100–900 weight axis, which is why these blocks
+   declare a weight range rather than one weight each.
+
+   Noto Sans JP has no peso sign (U+20B1) in either Latin subset, even though
+   Google's own unicode-range for latin-ext claims U+20AD-20C0. Every price on
+   this page needs that glyph, so Archivo stays in the stack behind it: the
+   browser falls through per glyph and picks up the peso from Archivo's
+   latin-ext file while everything else still renders in Noto. */
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url("/fonts/notosansjp-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url("/fonts/notosansjp-latin-ext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* Dirtylane (demo cut) is the brush script in the lockup — converted from the
+   supplied .otf to woff2, one weight, no italic. */
+@font-face {
+  font-family: "Dirtylane";
+  src: url("/fonts/dirtylane-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------
+   Cebu Marathon 2027 — design tokens
+
+   Palette sampled directly from the official 2027 artwork (the
+   profile lockup, the cover banner and the race-kit posters):
+   a deep Sinulog navy ground, the gold ring that frames the logo,
+   and the feather colours that fill the MARATHON wordmark.
+   --------------------------------------------------------------- */
+@theme {
+  /* Ground — the navy the whole identity sits on */
+  --color-navy-950: #01143a;
+  --color-navy-900: #022056;
+  --color-navy-850: #02265f;
+  --color-navy-800: #032d83;
+  --color-navy-700: #0037ac;
+  --color-navy-line: #ffffff1f;
+
+  /* Gold — the ring around the logo, and the primary CTA colour */
+  --color-gold: #f5a623;
+  --color-gold-bright: #ffa81e;
+  --color-gold-deep: #d8830a;
+  --color-gold-ghost: #f5a62329;
+  --color-gold-glow: #f5a62366;
+
+  /* Sinulog feather accents — the MARATHON wordmark gradient */
+  --color-aqua: #4ac3d4;
+  --color-rose: #d21b53;
+  --color-purple: #ac499b;
+  --color-orange: #f19321;
+  --color-lime: #8ec951;
+  --color-green: #68c27c;
+  --color-coral: #e53e45;
+
+  /* Brightened feather stops. The wordmark colours were sampled off print
+     artwork and go muddy when they are used as type on screen — the rose
+     and purple in particular read almost brown at small sizes. These are the
+     same hues lifted in luminance and saturation, for the script words. */
+  --color-feather-aqua: #5ad9ea;
+  --color-feather-green: #57e08a;
+  --color-feather-lime: #a6e84f;
+  --color-feather-gold: #ffc53d;
+  --color-feather-orange: #ff9d2e;
+  --color-feather-rose: #ff3f74;
+  --color-feather-purple: #d16fd0;
+
+  /* Light surfaces — the page now sits on the warm cream of the race-kit
+     posters rather than the navy, so the identity reads as a light brand
+     with colour accents instead of a dark one. */
+  --color-cream: #fff8d4;
+  --color-cream-soft: #fffcec;
+  --color-cream-card: #ffffff;
+  --color-cream-line: #01143a1a;
+
+  /* Pattern ink — the landmark line art behind the content */
+  --color-pattern: #ffefca;
+
+  /* Type */
+  --color-bone: #fdfbf6;
+  --color-bone-88: #fdfbf6eb;
+  --color-bone-64: #fdfbf6d6;
+  --color-bone-40: #fdfbf666;
+  --color-navy-ink: #01143a;
+
+  --font-script: "Dirtylane", "Brush Script MT", cursive;
+  /* Headings */
+  --font-display: "Noto Sans JP", "Archivo", "Helvetica Neue", system-ui, sans-serif;
+  --font-condensed: "Noto Sans JP", "Archivo", "Helvetica Neue", system-ui, sans-serif;
+  /* Body and everything else */
+  --font-body: "Noto Sans JP", "Archivo", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "Noto Sans JP", "Archivo", "Helvetica Neue", system-ui, sans-serif;
+
+  --radius-pill: 40px;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-cream);
+}
+
+/* The navbar is sticky at 78px (64px on small screens) and a registration
+   bar pins to the bottom, so anchor targets need to clear the header. */
+[id] {
+  scroll-margin-top: 108px;
+}
+@media (max-width: 479px) {
+  [id] {
+    scroll-margin-top: 80px;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400; /* Noto Sans JP Regular: Light read too thin at body sizes */
+  font-size: 18px;
+  line-height: 1.6;
+  background-color: var(--color-cream);
+  color: var(--color-navy-ink);
+  -webkit-font-smoothing: antialiased;
+  /* room for the sticky mobile register bar */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Headings run in Noto Sans JP Bold. Where Bebas Neue was a condensed
+   single-weight face that wanted open tracking, Noto Sans JP is a wide
+   grotesque: at heading sizes it wants slight negative tracking to stop the
+   caps drifting apart, and it needs a real weight to carry a heading, so
+   every display element is set at 700. */
+.font-display,
+.font-condensed {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* Heading shadow.
+
+   Two layers doing two jobs: a tight, nearly-opaque one that sits directly
+   under the glyph and gives the letterform an edge, and a wide soft one
+   that lifts the whole heading off the ground behind it. Both are navy
+   rather than black, so the shadow reads as part of the palette on the
+   cream sections instead of as grime.
+
+   The script word cannot use this: `.feather-text` paints its colour as a
+   clipped background, and `text-shadow` draws underneath that background
+   rather than around the visible gradient. It gets `drop-shadow()` instead,
+   which filters the rendered result and so follows the gradient shape. */
+.headline,
+.display-shadow {
+  text-shadow:
+    0 1px 0 #01143a14,
+    0 3px 10px #01143a24;
+}
+
+/* The script word in the lockup ("Cebu", "one", "run").
+
+   Sized so the script matches the caps beside it rather than sitting under
+   them. Noto Sans JP's cap height is 0.733em; Dirtylane's lowercase tops out
+   at roughly 0.34em of its own em box, so 2.15em brings the two to the same
+   optical height. Its capitals then overshoot the caps line, which is what a
+   script face is supposed to do.
+
+   Dirtylane draws far smaller than its metrics advertise — the OS/2 table
+   claims a 0.73em cap height, but the outlines say otherwise — so these
+   numbers come from measuring the glyphs, not from the font's own tables.
+
+   It has almost no vertical overshoot below the baseline (-0.03em at worst),
+   so it needs only a small padding allowance, with a matching negative
+   margin so that padding never affects line spacing. */
+.script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 2.15em;
+  line-height: 1;
+  display: inline-block;
+  overflow: visible;
+  /* The gradient is painted as a clipped background, so it only reaches as
+     far as the box does. Letters with long tails — the p in "prizes", the y
+     in "day" — drop well below the baseline and were fading out past the
+     box's edge. The bottom padding covers them; the matching negative
+     margin keeps it out of the line spacing. */
+  padding: 0.1em 0.08em 0.36em;
+  margin: -0.1em 0.02em -0.36em;
+  vertical-align: baseline;
+  transform: translateY(0.02em);
+  /* A tight, near-solid lift like the race posters' lettering: short offset,
+     almost no blur, so the letters get a crisp edge rather than a haze. */
+  filter: drop-shadow(0 1px 0 #01143a40) drop-shadow(0 2px 1.5px #01143a33);
+}
+
+/* ---------------------------------------------------------------
+   Race cards (the Distances section)
+
+   Every colour on a card comes from four custom properties set inline per
+   distance — `--a` the solid accent, `--g1 → --g3` its gradient, light to
+   deep — so the whole card follows its distance's colour from one place.
+   --------------------------------------------------------------- */
+/* ---------------------------------------------------------------
+   Site navigation
+
+   Over the hero the bar is transparent with white links and the big white
+   lockup; once the page scrolls it lands on cream, the links turn navy and
+   the lockup shrinks and swaps to the colour version. Only from 992px up —
+   below that the menu panel needs a solid bar behind it.
+   --------------------------------------------------------------- */
+.site-nav {
+  background: var(--color-cream);
+  border-bottom: 1px solid #01143a1a;
+  transition:
+    background-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 600ms ease;
+}
+.site-nav__bar {
+  height: 96px;
+  transition: height 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The lockup keeps one layout size (72px tall) in every state; the larger
+   top-of-page size is a scale transform. Animating `transform` runs on the
+   compositor, where animating `height` would re-lay out the bar on every
+   frame — that is what made the old change feel stepped. */
+.site-nav__brand {
+  position: relative;
+  display: block;
+  height: 72px;
+  transform-origin: left center;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-nav__logo {
+  display: block;
+  width: auto;
+  height: 100%;
+  transition: opacity 500ms ease;
+}
+.site-nav__logo--light {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+@media (max-width: 767px) {
+  .site-nav__bar { height: 80px; }
+  .site-nav__brand { height: 60px; }
+}
+@media (max-width: 479px) {
+  .site-nav__bar { height: 72px; }
+  .site-nav__brand { height: 52px; }
+}
+
+@media (min-width: 992px) {
+  /* At the top of the page: no bar, white type, lockup at 1.5x. */
+  .site-nav:not(.is-stuck) {
+    background-color: transparent;
+    border-bottom-color: transparent;
+  }
+  .site-nav:not(.is-stuck) .site-nav__bar {
+    height: 140px;
+  }
+  .site-nav:not(.is-stuck) .site-nav__brand {
+    transform: scale(1.5);
+  }
+  .site-nav:not(.is-stuck) .site-nav__logo--dark {
+    opacity: 0;
+  }
+  .site-nav:not(.is-stuck) .site-nav__logo--light {
+    opacity: 1;
+    filter: drop-shadow(0 2px 10px #01143a66);
+  }
+  .site-nav [data-nav-link] {
+    transition: color 500ms ease, text-shadow 500ms ease;
+  }
+  .site-nav:not(.is-stuck) [data-nav-link] {
+    color: #fff;
+    text-shadow: 0 1px 6px #01143a80;
+  }
+  .site-nav:not(.is-stuck) [data-nav-link]:hover {
+    color: var(--color-gold-bright);
+  }
+  .site-nav .nav-ghost {
+    transition: background-color 500ms ease, border-color 500ms ease, color 500ms ease;
+  }
+  .site-nav:not(.is-stuck) .nav-ghost {
+    background: #ffffff1f;
+    border: 1px solid #ffffff59;
+    color: #fff;
+    backdrop-filter: blur(14px);
+  }
+  .site-nav:not(.is-stuck) .nav-ghost:hover {
+    background: #ffffff33;
+  }
+
+  /* Scrolled. */
+  .site-nav.is-stuck {
+    background-color: color-mix(in srgb, var(--color-cream) 92%, transparent);
+    backdrop-filter: blur(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .site-nav__bar,
+  .site-nav__brand,
+  .site-nav__logo {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Cash prizes
+
+   Warm gold ground with the tribal pattern, as on the official prize
+   boards. Each column is a navy plate carrying the script numeral, and
+   under it a ribbon in that distance's gradient which unrolls downward when
+   the grid comes into view — the plates are there first, then the purse.
+   --------------------------------------------------------------- */
+.prizes {
+  background: linear-gradient(180deg, #fff3c4 0%, #ffe8a0 100%);
+}
+
+.prize-col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* The plate: same royal-blue skewed panel as the distance badges. */
+.prize-plate {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  height: 150px;
+  transform: skewY(-3deg);
+  background: linear-gradient(160deg, #2e4ae0 0%, #1b2da6 50%, #0d165c 100%);
+  box-shadow:
+    inset 0 1px 0 #ffffff33,
+    0 18px 30px -16px #01143ab0;
+}
+.prize-plate__inner {
+  display: flex;
+  align-items: flex-start;
+  transform: skewY(3deg);
+}
+/* Scoped to the plate so these beat the distance badge's own sizes, which
+   the numerals share and which come later in this file. */
+.prize-plate .prize-plate__num {
+  font-size: 128px;
+}
+.prize-plate .prize-plate__k {
+  font-size: 48px;
+}
+
+/* The ribbon, in the distance's light-to-mid gradient so the navy figures
+   stay readable top to bottom. It starts rolled up behind the plate. */
+.prize-ribbon {
+  margin: -8px 8% 0;
+  padding: 26px 22px 30px;
+  list-style: none;
+  background: linear-gradient(180deg, var(--g1), var(--g2));
+  box-shadow: 0 20px 40px -24px #01143a80;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 900ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--c) * 140ms + 150ms);
+}
+.prize-grid.is-open .prize-ribbon {
+  clip-path: inset(0 0 0 0);
+}
+
+.prize-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 400ms ease,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--c) * 140ms + 350ms + var(--r) * 110ms);
+}
+.prize-row + .prize-row {
+  border-top: 2px dotted #01143a40;
+}
+.prize-grid.is-open .prize-row {
+  opacity: 1;
+  transform: none;
+}
+.prize-row__place {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-navy-ink);
+}
+.prize-row__amount {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(30px, 2.6vw, 40px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-navy-ink);
+  font-variant-numeric: tabular-nums;
+}
+/* The champion's purse leads. */
+.prize-row:first-child .prize-row__amount {
+  font-size: clamp(36px, 3.2vw, 50px);
+}
+
+/* Special categories. */
+.prize-panel {
+  border-radius: 20px;
+  background: #ffffffb3;
+  padding: 28px;
+  box-shadow: 0 20px 50px -34px #01143a80;
+}
+.prize-panel--dark {
+  background: linear-gradient(160deg, #1b2da6, #0d165c);
+  color: var(--color-bone);
+}
+.prize-mini {
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--g1), var(--g2));
+}
+/* Navy band with the distance set in its own gradient. The gradient lives
+   on the inner span: on the band itself, the band's fill would paint over
+   the clipped text and leave the header blank. */
+.prize-mini__head {
+  padding: 8px 14px;
+  background: #0d165c;
+}
+.prize-mini__head span {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 20px;
+  background-image: linear-gradient(120deg, var(--g1), var(--g2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.prize-mini__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  white-space: nowrap;
+  padding: 9px 14px;
+  font-size: 15px;
+  color: var(--color-navy-ink);
+}
+.prize-mini__row + .prize-mini__row {
+  border-top: 2px dotted #01143a33;
+}
+.prize-mini__row strong,
+.prize-dark-row strong {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+.prize-dark-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 0;
+  font-size: 16px;
+}
+.prize-dark-row + .prize-dark-row {
+  border-top: 2px dotted #ffffff26;
+}
+.prize-dark-row strong {
+  color: var(--color-gold-bright);
+}
+
+@media (max-width: 479px) {
+  .prize-plate { height: 124px; }
+  .prize-plate .prize-plate__num { font-size: 104px; }
+  .prize-plate .prize-plate__k { font-size: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prize-ribbon { clip-path: none; transition: none; }
+  .prize-row { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------------------------------------------------------------
+   Raffle tile
+
+   Navy with the tribal pattern, as on the raffle poster. The car cut-out
+   anchors to the bottom-right and runs slightly off the card, so the
+   rounded corner crops it the way the poster frame does.
+   --------------------------------------------------------------- */
+.raffle-tile {
+  background:
+    radial-gradient(120% 80% at 80% 100%, #2a3fc466 0%, transparent 60%),
+    var(--color-navy-900);
+}
+.raffle-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/images/pattern-landmarks-white.svg");
+  background-size: 900px auto;
+  opacity: 0.035;
+  pointer-events: none;
+}
+.raffle-kicker {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-aqua);
+}
+.raffle-kicker__script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: 1.9em;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: 0;
+  vertical-align: -0.12em;
+}
+/* Car and feathers share one positioned stage in the lower right. The
+   feathers fan up behind the car the way they do on the poster. */
+.raffle-tile__stage {
+  position: absolute;
+  right: -9%;
+  bottom: -3%;
+  width: 112%;
+  aspect-ratio: 1977 / 1100;
+  pointer-events: none;
+}
+.raffle-tile__car {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 22px 26px #0009);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.raffle-feather {
+  position: absolute;
+  width: 26%;
+  height: auto;
+  transform-origin: 50% 90%;
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 6px 10px #01143a55);
+}
+.raffle-feather--1 { left: 4%;  bottom: 30%; transform: rotate(-58deg); }
+.raffle-feather--2 { left: 20%; bottom: 44%; transform: rotate(-22deg); width: 24%; }
+.raffle-feather--3 { left: 6%;  bottom: 12%; transform: rotate(-104deg); width: 20%; }
+.raffle-feather--4 { right: 2%; bottom: 40%; transform: rotate(28deg); width: 24%; }
+.raffle-feather--5 { right: -4%; bottom: 18%; transform: rotate(74deg); width: 22%; }
+.raffle-tile:hover .raffle-tile__car {
+  transform: translateX(-10px);
+}
+.raffle-tile:hover .raffle-feather--1 { transform: rotate(-64deg); }
+.raffle-tile:hover .raffle-feather--2 { transform: rotate(-28deg); }
+.raffle-tile:hover .raffle-feather--4 { transform: rotate(34deg); }
+.raffle-tile:hover .raffle-feather--5 { transform: rotate(80deg); }
+/* On phones the car leaves the corner and follows the copy in the flow,
+   with clear space above it, so it never sits over the text. */
+@media (max-width: 639px) {
+  .raffle-tile {
+    min-height: 0;
+  }
+  .raffle-tile__stage {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 118%;
+    margin: 48px -12% -6% auto;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Film CTA (before the footer) — copy above, player below
+   --------------------------------------------------------------- */
+/* A royal-blue glow rising from the bottom of the section, so it ends on
+   a lighter band that the footer's rainbow rule then cuts across — the two
+   navy sections read as separate instead of running together. */
+.film-cta::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 45%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 100% at 50% 100%, #2e4ae066 0%, transparent 70%),
+    linear-gradient(180deg, #01143a00 0%, #1b2da659 100%);
+}
+
+.film-secondary {
+  display: inline-flex;
+  align-items: center;
+  height: 62px;
+  padding: 0 34px;
+  border-radius: var(--radius-pill);
+  border: 1px solid #ffffff59;
+  background: #ffffff14;
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 250ms ease, border-color 250ms ease;
+}
+.film-secondary:hover {
+  background: #ffffff29;
+  border-color: #ffffffa6;
+}
+@media (max-width: 479px) {
+  .film-secondary { height: 56px; padding: 0 26px; font-size: 18px; }
+}
+
+.player {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  background: var(--color-navy-900);
+  box-shadow: 0 40px 80px -40px #000c;
+}
+.player:fullscreen {
+  border-radius: 0;
+  aspect-ratio: auto;
+}
+.player__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* Large play button over the poster, until the film has started. */
+.player__big {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #ffffffe6;
+  color: var(--color-navy-ink);
+  box-shadow: 0 16px 40px -12px #000a;
+  cursor: pointer;
+  transition: transform 300ms cubic-bezier(0.34, 1.4, 0.5, 1), opacity 300ms ease;
+}
+.player__big svg { width: 38px; height: 38px; margin-left: 5px; }
+.player__big:hover { transform: scale(1.06); }
+.player.has-started .player__big {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+/* Control bar: sits over a soft shade at the bottom of the frame. It stays
+   visible while paused, and fades out during playback until the pointer
+   comes back over the player. */
+.player__bar {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 44px 22px 18px;
+  background: linear-gradient(180deg, #01143a00, #01143ad9);
+  color: #fff;
+  transition: opacity 300ms ease;
+}
+.player.is-playing:not(:hover):not(:focus-within) .player__bar {
+  opacity: 0;
+}
+.player__btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+.player__btn:hover,
+.player__btn:focus-visible { background: #ffffff26; }
+.player__btn svg { width: 22px; height: 22px; }
+.player__btn .icon-pause,
+.player__btn .icon-sound { display: none; }
+.player.is-playing .icon-play { display: none; }
+.player.is-playing .icon-pause { display: block; }
+.player.is-unmuted .icon-muted { display: none; }
+.player.is-unmuted .icon-sound { display: block; }
+
+.player__time {
+  flex: none;
+  min-width: 3.2em;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Scrubber: a range input with the played part filled in gold. */
+.player__seek {
+  --fill: 0%;
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--color-gold-bright) 0 var(--fill),
+    #ffffff40 var(--fill) 100%
+  );
+  cursor: pointer;
+}
+.player__seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 6px #0008;
+}
+.player__seek::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+}
+.player__volume {
+  --fill: 100%;
+  flex: none;
+  width: 90px;
+}
+.player__sound {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+.player__seek:focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 4px;
+}
+
+@media (max-width: 479px) {
+  .player { border-radius: 14px; }
+  .player__big { width: 72px; height: 72px; }
+  .player__big svg { width: 30px; height: 30px; }
+  .player__bar { gap: 8px; padding: 36px 12px 12px; }
+  .player__time[data-player-duration] { display: none; }
+  /* Phones set volume with their hardware buttons; the mute toggle stays. */
+  .player__volume { display: none; }
+}
+
+/* Footer social links: round, quiet until hovered. */
+.footer-social {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #ffffff2e;
+  color: var(--color-bone);
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.footer-social:hover,
+.footer-social:focus-visible {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------
+   FAQ accordion
+
+   The answer sits in a grid row that grows from 0fr to 1fr, so the panel
+   animates to its own height rather than to an arbitrary max-height. The
+   text also fades and lifts slightly, which is what makes the open and
+   close read as one movement instead of a shutter.
+   --------------------------------------------------------------- */
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.faq-panel.is-open {
+  grid-template-rows: 1fr;
+}
+.faq-panel__inner {
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 260ms ease,
+    transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.faq-panel.is-open .faq-panel__inner {
+  opacity: 1;
+  transform: none;
+  transition-delay: 60ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-panel,
+  .faq-panel__inner {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Primary call to action
+
+   A gold pill carrying the tribal pattern, with the Sinulog feathers
+   stacked behind it. Hovering pops the feathers out and fans them to
+   either side; once out they sway, and stars twinkle around them.
+
+   The pop and the sway are on separate elements on purpose: the outer one
+   transitions to its resting angle, the inner one runs the endless sway.
+   One element cannot do both, since they would fight over `transform`.
+   --------------------------------------------------------------- */
+.cta {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+  z-index: 0;
+}
+/* While the fan is out it reaches past the button, so the whole thing sits
+   above whatever is beside it. */
+.cta:hover,
+.cta:focus-within {
+  z-index: 5;
+}
+
+.cta__flora {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cta__feather {
+  /* Rotation happens around the quill, not the middle of the image: the
+     quill stays pinned to its anchor behind the pill while the plume
+     swings out, so no stem ever appears past the button's edge. The
+     element is offset by the same point so that origin sits on the anchor. */
+  --out: 8px;
+  position: absolute;
+  top: 50%;
+  /* Sized off the pill, not the viewport: in the artwork a feather is only
+     a little longer than the button is tall. */
+  width: 66px;
+  aspect-ratio: 3 / 4;
+  transform-origin: 50% 94%;
+  transform: translate(-50%, -94%) rotate(calc(var(--rot) * 0.3)) scale(0.32);
+  opacity: 0;
+  transition:
+    transform 660ms cubic-bezier(0.34, 1.35, 0.5, 1) var(--d, 0ms),
+    opacity 300ms ease var(--d, 0ms);
+}
+/* Anchored inside the pill, far enough in that the quill and the inner
+   barbs stay covered by it. */
+.cta__feather--l {
+  left: 20%;
+}
+.cta__feather--r {
+  left: 80%;
+}
+
+.cta__feather-sway {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 94%;
+}
+.cta__feather img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px #01143a40);
+}
+
+/* Out: each feather travels to its own angle and offset. */
+.cta:hover .cta__feather,
+.cta:focus-within .cta__feather {
+  transform: translate(-50%, -94%) rotate(var(--rot))
+    translateY(calc(var(--out) * var(--k) * -1)) scale(var(--s));
+  opacity: 1;
+}
+/* ...and then sways, once it has arrived. */
+.cta:hover .cta__feather-sway,
+.cta:focus-within .cta__feather-sway {
+  animation: cta-sway 3.4s ease-in-out calc(var(--d, 0ms) + 620ms) infinite;
+}
+@keyframes cta-sway {
+  0%,
+  100% {
+    transform: rotate(-3.5deg) translateY(0);
+  }
+  50% {
+    transform: rotate(3.5deg) translateY(-3px);
+  }
+}
+
+.cta__glint {
+  position: absolute;
+  top: 24%;
+  left: 46%;
+  width: 26%;
+  height: 26%;
+  fill: #fff;
+  opacity: 0;
+  transform: scale(0.2) rotate(0deg);
+  filter: drop-shadow(0 0 4px #fff);
+  pointer-events: none;
+}
+.cta:hover .cta__glint,
+.cta:focus-within .cta__glint {
+  animation: cta-glint 2.2s ease-in-out calc(var(--d, 0ms) + 700ms) infinite;
+}
+@keyframes cta-glint {
+  0%,
+  62%,
+  100% {
+    opacity: 0;
+    transform: scale(0.25) rotate(0deg);
+  }
+  18% {
+    opacity: 0.95;
+    transform: scale(1) rotate(35deg);
+  }
+  40% {
+    opacity: 0.25;
+    transform: scale(0.55) rotate(70deg);
+  }
+}
+
+.cta__star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
+  opacity: 0;
+  filter: drop-shadow(0 0 5px var(--color-gold-bright));
+}
+.cta:hover .cta__star,
+.cta:focus-within .cta__star {
+  animation: cta-twinkle 2.6s ease-in-out var(--d, 0ms) infinite;
+}
+@keyframes cta-twinkle {
+  0%,
+  100% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+      scale(calc(var(--s) * 0.2)) rotate(0deg);
+    opacity: 0;
+  }
+  35% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+      scale(var(--s)) rotate(45deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+      scale(calc(var(--s) * 0.55)) rotate(90deg);
+    opacity: 0.35;
+  }
+}
+
+/* The pill itself: gold, with the tribal pattern multiplied into it so the
+   texture darkens the gold rather than washing white over it. */
+.cta__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    135deg,
+    #ffd978 0%,
+    var(--color-gold-bright) 38%,
+    var(--color-gold) 72%,
+    var(--color-gold-deep) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 #fff6,
+    0 10px 24px -12px #01143a80;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 300ms cubic-bezier(0.34, 1.4, 0.5, 1), box-shadow 300ms ease;
+}
+.cta__button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/images/pattern-landmarks.svg");
+  background-size: 300px auto;
+  background-position: center;
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+  pointer-events: none;
+}
+.cta__label {
+  position: relative;
+  text-shadow: 0 1px 2px #01143a3d;
+}
+.cta:hover .cta__button,
+.cta:focus-within .cta__button {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 #fff8,
+    0 16px 30px -14px #01143a99;
+}
+.cta__button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.cta--lg .cta__button {
+  height: 62px;
+  padding: 0 40px;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.cta--sm .cta__button {
+  height: 44px;
+  padding: 0 26px;
+  font-size: 18px;
+}
+.cta--full,
+.cta--full .cta__button {
+  width: 100%;
+}
+.cta--upper .cta__label {
+  text-transform: uppercase;
+}
+
+.cta--sm .cta__feather {
+  --out: 6px;
+  width: 48px;
+}
+.cta--sm .cta__star {
+  width: 14px;
+}
+
+@media (max-width: 479px) {
+  .cta--lg .cta__button {
+    height: 56px;
+    padding: 0 28px;
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta__feather,
+  .cta__feather-sway,
+  .cta__glint,
+  .cta__star,
+  .cta__button {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* The hand-drawn arrow in the flip hint: it follows the label and curves
+   down toward the cards. Full white so it holds on the navy; a transform
+   does not change layout, so it hangs below the line without moving the
+   cards. */
+.script-arrow {
+  width: 38px;
+  height: auto;
+  flex: none;
+  color: var(--color-bone);
+  transform: translateY(12px) rotate(4deg);
+}
+
+/* The flip hint names the gesture the device actually has. */
+.kit-hint--tap {
+  display: none;
+}
+@media (hover: none) {
+  .kit-hint--hover { display: none; }
+  .kit-hint--tap { display: inline; }
+}
+
+/* ---------------------------------------------------------------
+   Race card flip
+
+   The card turns over on hover to show that distance's race-kit artwork.
+   Both faces sit in one 3D layer: the front is in normal flow and sets the
+   card's height, the back is absolutely positioned over it and pre-rotated,
+   so the two always match no matter how long the blurb runs.
+   --------------------------------------------------------------- */
+.race-flip {
+  position: relative;
+  perspective: 1800px;
+}
+.race-flip__inner {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.race-flip:hover .race-flip__inner,
+.race-flip:focus-within .race-flip__inner,
+.race-flip.is-flipped .race-flip__inner {
+  transform: rotateY(180deg);
+}
+.race-flip__face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+/* The front face fills the row rather than its own content, so all four
+   cards match the tallest and every Register button lines up. The blurbs
+   and kit lists differ in length, so the space lands above the button. */
+.race-flip__inner > .race-flip__face {
+  height: 100%;
+}
+.race-flip__back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transform: rotateY(180deg);
+}
+/* A face's `transform` is what puts it in 3D — the back is held at
+   rotateY(180deg) so it faces the viewer once the card turns. So the
+   card's own hover lift, `.race-card:hover { transform: translateY(-6px) }`,
+   must not reach a face: it would replace that rotation and leave the back
+   pointing away, i.e. an apparently empty card. The lift is dropped here
+   (the flip is the interaction), and the back's rotation is then restated
+   at a specificity that beats the hover rule. */
+.race-flip .race-card:hover {
+  transform: none;
+}
+.race-flip .race-flip__back,
+.race-flip .race-flip__back:hover {
+  transform: rotateY(180deg);
+}
+/* The open card sits above its neighbours, since its artwork now spills
+   past the card edge, and the other three step back so the spill reads
+   clearly against them. */
+.race-flip:hover,
+.race-flip.is-flipped {
+  z-index: 3;
+}
+.race-flip {
+  transition: opacity 400ms ease, filter 400ms ease;
+}
+.race-grid:has(.race-flip:hover) .race-flip:not(:hover),
+.race-grid:has(.race-flip.is-flipped) .race-flip:not(.is-flipped) {
+  opacity: 0.35;
+  filter: saturate(0.55);
+}
+
+/* "See the race kit", bottom of the front face. */
+.race-flip__hint {
+  position: absolute;
+  inset: auto 0 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-bone-40);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+.race-card:hover .race-flip__hint {
+  opacity: 1;
+}
+
+/* ---- Back face -------------------------------------------------- */
+.race-kit__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.race-kit__distance {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background-image: linear-gradient(120deg, var(--g1), var(--g2) 55%, var(--g3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.race-kit__title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-bone-40);
+}
+
+/* The kit is scattered rather than gridded, the way the entitlement
+   artwork is laid out on the posters: each piece sits at its own angle and
+   drifts on a slow loop, with the angles and timings deliberately unequal
+   so the group never pulses in unison.
+
+   Items are placed by index. The 10K and 5K have no finisher towel, so on
+   those cards the remaining five pieces simply take the first five
+   positions. */
+.race-kit__grid {
+  position: relative;
+  flex: 1;
+  min-height: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.race-kit__item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  animation: kit-float var(--dur, 7s) ease-in-out var(--delay, 0s) infinite;
+  transform: rotate(var(--rot, 0deg));
+}
+@keyframes kit-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(calc(var(--rot, 0deg) + 1.5deg));
+  }
+}
+
+/* Slot 1 is the medal: it leads the group, sits highest and runs larger
+   than anything around it, with the rest arranged below and behind it. */
+.race-kit__item:nth-child(1) { --rot: -4deg; --dur: 8s;   --delay: 0s;    left: 16%;  top: -10%; width: 70%; z-index: 2; }
+.race-kit__item:nth-child(2) { --rot: -8deg; --dur: 7.5s; --delay: -1.4s; left: -18%; top: 24%;  width: 58%; }
+.race-kit__item:nth-child(3) { --rot: 6deg;  --dur: 8.6s; --delay: -2.6s; left: 46%;  top: 26%;  width: 64%; }
+.race-kit__item:nth-child(4) { --rot: -5deg; --dur: 9.2s; --delay: -0.8s; left: -14%; top: 55%;  width: 62%; }
+.race-kit__item:nth-child(5) { --rot: 7deg;  --dur: 7.9s; --delay: -3.2s; left: 48%;  top: 58%;  width: 56%; }
+.race-kit__item:nth-child(6) { --rot: -6deg; --dur: 9.6s; --delay: -2s;   left: 6%;   top: 80%;  width: 60%; }
+
+.race-kit__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+.race-kit__art::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--a) 30%, transparent) 0%, transparent 68%);
+  opacity: 0.3;
+  transition: opacity 600ms ease;
+}
+.race-flip:hover .race-kit__art::before,
+.race-flip.is-flipped .race-kit__art::before {
+  opacity: 0.55;
+}
+.race-kit__img {
+  position: relative;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--a) 35%, transparent))
+    drop-shadow(0 8px 14px #000a);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), filter 600ms ease;
+}
+.race-flip:hover .race-kit__img,
+.race-flip.is-flipped .race-kit__img {
+  transform: translateY(-2px) scale(1.04);
+  filter: drop-shadow(0 0 11px color-mix(in srgb, var(--a) 50%, transparent))
+    drop-shadow(0 12px 18px #000b);
+}
+.race-kit__item:nth-child(1) .race-kit__art::before {
+  opacity: 0.45;
+}
+.race-flip:hover .race-kit__item:nth-child(1) .race-kit__art::before,
+.race-flip.is-flipped .race-kit__item:nth-child(1) .race-kit__art::before {
+  opacity: 0.75;
+}
+
+.race-kit__label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--color-bone-64);
+  text-shadow: 0 1px 4px #01143a;
+}
+
+.race-kit__extras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+.race-kit__chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: #ffffff0f;
+  padding: 5px 11px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-bone-64);
+}
+.race-kit__cta {
+  display: flex;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+
+@media (max-width: 479px) {
+  .race-kit__grid { min-height: 230px; }
+}
+
+/* Without hover (touch), the card turns on tap via the script instead. */
+@media (prefers-reduced-motion: reduce) {
+  .race-flip__inner { transition: none; }
+  .race-kit__item { animation: none; }
+}
+
+.race-card {
+  background: var(--color-navy-900);
+  border: 1px solid color-mix(in srgb, var(--a) 45%, transparent);
+  transition:
+    transform 400ms ease-out,
+    border-color 400ms ease-out,
+    box-shadow 400ms ease-out;
+}
+.race-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--a) 90%, transparent);
+  box-shadow: 0 28px 60px -28px var(--a);
+}
+.race-card__rule {
+  background: linear-gradient(90deg, var(--g1), var(--g2) 55%, var(--g3));
+}
+.race-card__ghost,
+.race-card__check {
+  color: var(--a);
+}
+.race-card__cta {
+  background: linear-gradient(100deg, var(--g2), var(--g3));
+  text-shadow: 0 1px 2px #01143a40;
+  box-shadow: 0 10px 24px -12px var(--a);
+}
+
+/* The badge plate: royal blue, lit from the top-left like the artwork. */
+.race-badge {
+  background: linear-gradient(120deg, #2e4ae0 0%, #1b2da6 45%, #0d165c 100%);
+  box-shadow:
+    inset 0 1px 0 #ffffff33,
+    0 18px 34px -12px #000c;
+}
+
+/* The digits, in Dirtylane. Its figures only rise 0.58em off the baseline,
+   so the line box is cut to 0.7em — that trims the empty space the font's
+   metrics would otherwise leave above them and lets the plate hug the
+   figures. The gradient runs light at the top-left to deep at the bottom
+   right, and because it is a clipped background, the shadow is a filter. */
+.race-badge__num {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: 164px;
+  line-height: 0.7;
+  letter-spacing: -0.01em;
+  padding: 0.04em 0.06em 0;
+  background-image: linear-gradient(160deg, var(--g1) 8%, var(--g2) 50%, var(--g3) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 1px #0007) drop-shadow(0 8px 16px #0006);
+}
+
+/* The K, in Noto Sans JP Black. Noto has no italic, so the slant is a skew
+   matched to the script. It carries the light end of the same gradient, so
+   it reads as part of the numeral rather than a label beside it. */
+.race-badge__k {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 62px;
+  line-height: 1;
+  margin-left: 0.04em;
+  transform: skewX(-12deg) translateY(-0.02em);
+  background-image: linear-gradient(170deg, #ffffff 0%, var(--g1) 60%, var(--g2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 1px #0007) drop-shadow(0 6px 12px #0005);
+}
+
+/* On phones the card is at most 480px wide; the badge steps down with it. */
+@media (max-width: 479px) {
+  .race-badge__num { font-size: 132px; }
+  .race-badge__k { font-size: 50px; }
+}
+
+/* ---------------------------------------------------------------
+   History timeline (after the Zeal timeline slider)
+
+   Card strip on top, year track below. Both rows are positioned by the
+   script in History.astro; everything here is look and motion.
+   --------------------------------------------------------------- */
+.tl-frame {
+  touch-action: pan-y; /* horizontal drags belong to the strip */
+  cursor: grab;
+  user-select: none;
+}
+.tl-strip {
+  gap: 30px;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.tl-strip.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+/* Each card is a cream plate. The year runs huge and faint behind the
+   logo, so the plate reads as that year even at a glance. */
+.tl-card {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: clamp(280px, 52vw, 760px);
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--color-cream-soft);
+  box-shadow: 0 30px 60px -30px #000c;
+  cursor: pointer;
+  opacity: 0.35;
+  transform: scale(0.7);
+  transition:
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 600ms ease;
+}
+.tl-card.is-near {
+  opacity: 0.55;
+}
+.tl-card.is-active {
+  opacity: 1;
+  transform: scale(1);
+  cursor: default;
+}
+.tl-card:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 4px;
+}
+.tl-card__year {
+  position: absolute;
+  inset: auto -0.04em -0.2em auto;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(110px, 17vw, 240px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--color-navy-ink);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* The logos on the live site are small, low-resolution files — most are
+   only 73px tall — so they are held close to their native size rather than
+   stretched to fill the card, which would blur them. `multiply` drops their
+   white backgrounds into the cream plate. */
+.tl-card__logo {
+  position: relative;
+  width: auto;
+  height: auto;
+  max-width: 72%;
+  max-height: min(56%, 150px);
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Photo cards: the race-day photo fills the card, a navy shade rises from
+   the bottom, and the year's logo sits on a white plate in the bottom-left
+   with the year set large beside it. */
+.tl-card--photo {
+  background: var(--color-navy-900);
+}
+.tl-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transform: scale(1.06);
+  transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tl-card.is-active .tl-card__photo {
+  transform: scale(1);
+}
+.tl-card__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #01143a00 35%, #01143ab3 78%, #01143ae6 100%);
+  pointer-events: none;
+}
+.tl-card__foot {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(14px, 2.2vw, 28px);
+  pointer-events: none;
+}
+.tl-card__plate {
+  display: grid;
+  place-items: center;
+  max-width: 55%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 24px -10px #000a;
+}
+.tl-card__plate-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: clamp(44px, 6vw, 88px);
+  object-fit: contain;
+}
+.tl-card__plate-type {
+  font-family: var(--font-script);
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.1;
+  color: var(--color-navy-ink);
+  white-space: nowrap;
+}
+.tl-card__big-year {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(44px, 7vw, 104px);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: #fff;
+  text-shadow: 0 4px 20px #01143a80;
+}
+.tl-card__credit {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #01143a99;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffffcc;
+  pointer-events: none;
+}
+
+/* Years with no logo on the live site are set in type instead. */
+.tl-card__type {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+.tl-card__type-year {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(56px, 7vw, 96px);
+  letter-spacing: -0.04em;
+  background-image: linear-gradient(100deg, var(--color-aqua), var(--color-green) 30%, var(--color-gold-bright) 60%, var(--color-rose));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tl-card__type-name {
+  margin-top: 0.1em;
+  font-family: var(--font-script);
+  font-size: clamp(30px, 3.4vw, 44px);
+  color: var(--color-navy-ink);
+}
+
+/* Year track: a rounded line behind a dot per year, as in the source. */
+.tl-nav {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.tl-line {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 13px;
+  height: 4px;
+  border-radius: 4px;
+  background: #ffffff1f;
+}
+.tl-nav__row {
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tl-year {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 104px;
+  padding: 4px 0 8px;
+  cursor: pointer;
+}
+.tl-year__label {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  color: var(--color-bone-40);
+  transition: color 300ms ease, transform 300ms ease;
+}
+.tl-year:hover .tl-year__label {
+  color: var(--color-bone);
+}
+.tl-year__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-aqua);
+  transition: background 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+}
+.tl-year.is-active .tl-year__label {
+  color: var(--color-gold);
+  transform: scale(1.18);
+}
+.tl-year.is-active .tl-year__dot {
+  background: var(--color-gold);
+  transform: scale(1.3);
+  box-shadow: 0 0 0 5px #f5a62340;
+}
+.tl-year:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Round prev/next buttons at either end of the track. */
+.tl-arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-navy-ink);
+  cursor: pointer;
+  transition: background 250ms ease, color 250ms ease, opacity 250ms ease;
+}
+.tl-arrow:hover:not(:disabled) {
+  background: var(--color-gold);
+  color: #fff;
+}
+.tl-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.tl-panel {
+  animation: tl-fade 500ms ease both;
+}
+@keyframes tl-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 479px) {
+  .tl-strip { gap: 16px; }
+  .tl-card { width: 84vw; }
+  .tl-year { width: 76px; }
+  .tl-arrow { width: 40px; height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-strip,
+  .tl-card,
+  .tl-nav__row { transition: none; }
+  .tl-panel { animation: none; }
+}
+
+/* ---------------------------------------------------------------
+   Heading scale
+
+   One ladder for every heading on the page, replacing the per-component
+   pixel values that had drifted into fourteen different sizes with no
+   consistent step between them. Each rung is fluid: it scales with the
+   viewport between a floor and a ceiling, so the hierarchy holds at every
+   width instead of only at the breakpoints.
+
+       h1   the Hero, once per page
+       h2   section headings (`.headline`)
+       h3   the lead tile in a section
+       h4   card and tile titles
+       h5   the smallest titled thing
+
+   The numerals are a separate ladder. They are set in the same face but do
+   a different job — a counter or a distance is a figure to be read at a
+   glance, not a heading — and they are tabular, so they need sizes chosen
+   for the digits rather than for a line of caps.
+
+   The ceilings on h1 and h2 are set by measurement, not taste: at weight 900
+   with the script at 2.15em, the longest heading on the page runs 15.75em
+   and the Hero's first line 8.6em, which is what keeps each of them on one
+   line inside its column.
+   --------------------------------------------------------------- */
+.type-h1 {
+  font-size: clamp(40px, 7.2vw, 88px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.type-h3 {
+  font-size: clamp(26px, 3.2vw, 40px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.type-h4 {
+  font-size: clamp(21px, 2.2vw, 28px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+.type-h5 {
+  font-size: clamp(18px, 1.8vw, 23px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.type-stat-lg {
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+.type-stat {
+  font-size: clamp(38px, 4vw, 56px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+.type-stat-sm {
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+/* ---------------------------------------------------------------
+   No orphans
+
+   Paragraphs and list items use `pretty` wrapping, which stops a single
+   word landing alone on the last line. Headings and short labels use
+   `balance`, which evens the lines out so a heading never ends on one
+   stray word. Browsers without support fall back to normal wrapping.
+   --------------------------------------------------------------- */
+p,
+li,
+dd,
+figcaption,
+blockquote,
+summary {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.type-h1,
+.type-h3,
+.type-h4,
+.type-h5 {
+  text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------
+   Single-line headings
+
+   Section headings hold on one line from 640px up. Noto Sans JP is a far
+   wider face than the condensed one this rule was originally written for —
+   roughly 1.66x the advance width per cap — so the clamp scales down harder
+   than it used to in order to keep the longest heading inside the column.
+   --------------------------------------------------------------- */
+.headline {
+  white-space: nowrap;
+  font-size: clamp(28px, 5.4vw, 72px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+
+/* Below the tablet breakpoint, holding these headings on one line would
+   force them under 20px to fit, which is smaller than the body copy beneath
+   them. Past that point the single-line rule costs more than it buys, so
+   the heading wraps and `balance` keeps the two lines even. */
+@media (max-width: 639px) {
+  .headline {
+    white-space: normal;
+    text-wrap: balance;
+    font-size: clamp(30px, 8.4vw, 44px);
+    line-height: 1.28;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Background pattern
+
+   `pattern-landmarks.svg` is the official scattered landmark line art
+   (Santo Niño, CCLEX, Capitol, puso, the Seaside tower, the SRP palms,
+   the fish), filled #FFEFCA.
+
+   The fill is baked into the file rather than driven by `currentColor`:
+   an SVG loaded through `background-image` renders as an independent
+   document and cannot inherit the host page's `color`, so currentColor
+   would have fallen back to black. The footer needs the art to lighten
+   instead of darken, so it points at a white-filled copy of the same
+   file.
+
+   It is always painted on a ::before layer rather than the section
+   itself, for two reasons: the layer can be masked with a gradient so the
+   pattern fades out behind copy, and opacity on the layer never touches
+   the text sitting above it. Sections that carry the pattern need
+   `position: relative`, and their content needs to sit above z-index 0.
+   --------------------------------------------------------------- */
+.pattern {
+  position: relative;
+  isolation: isolate;
+}
+
+.pattern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("/images/pattern-landmarks.svg");
+  background-repeat: repeat;
+  background-size: 1600px auto;
+  background-position: center top;
+  opacity: 1;
+}
+
+/* Fades the pattern out through the vertical middle of the section, which
+   is where headings and body copy sit. The band stays legible at the top
+   and bottom edges and gets out of the way of the text. */
+.pattern--fade::before {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #00000026 32%,
+    #00000026 68%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #00000026 32%,
+    #00000026 68%,
+    #000 100%
+  );
+}
+
+/* Keeps the pattern to the outer margins so a centred content column runs
+   clear of it — the treatment used behind the race-category cards. */
+.pattern--edges::before {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0%,
+    #0000 26%,
+    #0000 74%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    #000 0%,
+    #0000 26%,
+    #0000 74%,
+    #000 100%
+  );
+}
+
+/* Faintest setting, for sections that are mostly text. */
+.pattern--soft::before {
+  opacity: 0.55;
+}
+
+/* On the navy footer the line art has to lighten rather than darken, and
+   it sits behind real copy rather than at a section edge — so it runs at a
+   fraction of the strength used on the cream sections. */
+.pattern--invert::before {
+  background-image: url("/images/pattern-landmarks-white.svg");
+  background-size: 1100px auto;
+  opacity: 0.012;
+}
+
+/* The tribal Sinulog pattern behind the artwork, reduced to a subtle
+   chevron weave so it reads as texture rather than noise. */
+.weave {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      #ffffff08 0 2px,
+      transparent 2px 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      #ffffff08 0 2px,
+      transparent 2px 14px
+    );
+}
+
+/* The feather gradient used on the wordmark, for headline accents. */
+.feather-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-feather-aqua) 0%,
+    var(--color-feather-green) 22%,
+    var(--color-feather-lime) 38%,
+    var(--color-feather-gold) 55%,
+    var(--color-feather-orange) 70%,
+    var(--color-feather-rose) 86%,
+    var(--color-feather-purple) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The same feather order, deepened, for script words on the gold and cream
+   grounds. The brightened stops above are tuned for navy: on a pale yellow
+   the lime and gold nearly vanish and the word reads washed out. */
+.feather-text--deep {
+  background-image: linear-gradient(
+    100deg,
+    #0e9fb5 0%,
+    #22a35a 22%,
+    #5f9e12 38%,
+    #d98300 55%,
+    #e65a0c 70%,
+    #d21b53 86%,
+    #962f8c 100%
+  );
+}
+
+.feather-rule {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-aqua),
+    var(--color-green),
+    var(--color-lime),
+    var(--color-gold-bright),
+    var(--color-orange),
+    var(--color-rose),
+    var(--color-purple)
+  );
+}
+
+/* Entrance animation base state, switched on by the shared
+   IntersectionObserver in Layout.astro. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 700ms ease-out,
+    transform 700ms ease-out,
+    filter 700ms ease-out;
+}
+[data-reveal="blur"] {
+  transform: none;
+  filter: blur(20px);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* The logo link sizes to the lockup inside it. */
+.flex.flex-shrink-0.items-center.no-underline{
+  width: auto;
+}
+
+.h-72px.w-auto.max-767pxh-14.max-479pxh-12{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

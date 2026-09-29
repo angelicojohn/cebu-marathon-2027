@@ -1,0 +1,290 @@
+---
+/**
+ * BYQ Supply — "Three Column Pricing Cards" (fit-trainer-pricing-1)
+ * https://app.byq.supply/sections/fit-trainer-pricing-1
+ *
+ * Preserved: the centred label-plus-H2 header over the card grid, the card
+ * anatomy (rate → distance → entitlement list → CTA), the 0.4s CTA colour
+ * transition, and the two-stage reveal where the heading fades in ahead of
+ * the grid.
+ *
+ * Adapted: four columns rather than three, and flipped onto the navy ground
+ * so the section reads as the one dark band in an otherwise cream page —
+ * this is the decision point, and it should stop the scroll. Each card now
+ * carries its own CTA, because the registration portal opens on a "pick
+ * your category" radio group: the choice gets made here and the portal step
+ * is only confirmation. Each card takes its colours from its distance's
+ * gradient on the race-card artwork — see `palette` below.
+ */
+import { Image } from "astro:assets";
+import { categories, event, paletteVars } from "../data/event";
+
+/* Every kit render, so a `kitItems` slug can be resolved to a real image.
+   Eager, because they are needed while rendering; Astro then emits an
+   optimised WebP for each instead of shipping the source PNGs. */
+const kitArt = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/kit/**/*.png",
+  { eager: true },
+);
+const art = (id: string, slug: string) =>
+  kitArt[`../assets/kit/${id}/${slug}.png`]?.default;
+
+/* The per-distance colours live in the data file (`distancePalette`) so
+   the prize table uses exactly the same set. */
+const vars = paletteVars;
+---
+
+<section
+  id="distances"
+  class="pattern pattern--invert relative overflow-hidden bg-navy-950 py-[150px] max-[991px]:py-[120px] font-body max-[479px]:py-[96px]"
+>
+  {/* The feather gradient reappears as a hairline at both edges of the band,
+      which is what ties this dark section back to the cream page around it. */}
+  <div class="feather-rule absolute inset-x-0 top-0 h-[3px]" aria-hidden="true"></div>
+  <div class="feather-rule absolute inset-x-0 bottom-0 h-[3px]" aria-hidden="true"></div>
+
+  <div class="relative z-[1] mx-auto w-full max-w-[1440px] px-6 max-[479px]:px-4">
+    {/* Centre heading */}
+    <div data-reveal class="mb-[64px] flex flex-col items-center gap-5 text-center">
+      <div
+        class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold-ghost px-5 font-mono text-[12px] font-medium tracking-[1.5px] text-gold uppercase"
+      >
+        Choose your distance
+      </div>
+      <h2 class="headline m-0 font-display text-bone uppercase">
+        Four races, <span class="script feather-text">one</span> finish line
+      </h2>
+      <p class="m-0 max-w-[62ch] text-[18px] leading-[1.6] text-bone-64">
+        Every category finishes at SM Seaside City Cebu, and every category
+        comes with a finisher medal. Registration runs to{" "}
+        <strong class="font-semibold text-bone">{event.registrationCloses}</strong>,
+        or sooner if slots run out.
+      </p>
+    </div>
+
+    {/* Hint: the cards turn over. */}
+    <p
+      data-reveal
+      class="mb-10 flex items-center justify-center gap-3 text-center font-mono text-[12px] tracking-[1.5px] text-bone-64 uppercase"
+    >
+
+      <span class="kit-hint--hover">Hover a card to see its race kit</span>
+      <span class="kit-hint--tap">Tap a card to see its race kit</span>
+      {/* A simple hand-drawn arrow: one easy curve out from the label and
+          down, ending in an open head that points into the cards below. */}
+      <svg viewBox="0 0 48 60" fill="none" aria-hidden="true" class="script-arrow">
+        <path d="M5 8c14-5 29 1 33 16 2.6 9.5 1.6 18 .2 27" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+        <path d="M30.5 43.5 38 53l7.5-9.2" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </p>
+
+    {/* Grid */}
+    <div
+      class="race-grid grid grid-cols-4 gap-x-4 gap-y-20 pt-16 max-[1279px]:grid-cols-2 max-[639px]:mx-auto max-[639px]:w-full max-[639px]:max-w-[480px] max-[639px]:grid-cols-1"
+    >
+      {
+        categories.map((cat, i) => (
+          <div
+            data-reveal
+            data-reveal-delay={`${i * 90}ms`}
+            style={vars(cat.id)}
+            class="race-flip"
+            data-flip
+          >
+            <div class="race-flip__inner">
+            {/* Front */}
+            <div class="race-card race-flip__face group relative flex flex-col gap-7 rounded-2xl p-8 max-[479px]:p-6">
+            {/* Clip layer. The card itself no longer clips, so the distance
+                badge can break out past its top-left corner; the accent
+                rule and the ghost numeral still need clipping to the card
+                radius, so they live in this layer instead. */}
+            <div
+              class="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
+              aria-hidden="true"
+            >
+              <div class="race-card__rule absolute inset-x-0 top-0 h-1 opacity-85 transition-opacity duration-[400ms] group-hover:opacity-100" />
+              <span class="race-card__ghost absolute -right-4 -bottom-6 font-condensed text-[132px] leading-none opacity-[0.06] transition-opacity duration-[400ms] select-none group-hover:opacity-[0.12]">
+                {cat.distance}
+              </span>
+            </div>
+
+            {/* Distance badge — a skewed royal-blue plate breaking out of the
+                card's top-left corner. The digits are Dirtylane; the K is
+                Noto Sans JP Black, slanted to sit with the script. Both are
+                filled with this card's gradient. The plate is skewed and its
+                contents counter-skewed, so the only slant on the digits is
+                the script's own. */}
+            <div class="relative flex min-h-[84px] items-end justify-end">
+              <div class="absolute -top-[84px] -left-[48px] -rotate-[4deg] max-[479px]:-left-[34px]">
+                <div class="race-badge skew-x-[-10deg] px-7 pt-4 pb-1">
+                  <span class="flex skew-x-[10deg] items-start whitespace-nowrap">
+                    <span class="race-badge__num">{cat.distance.replace(/K$/, "")}</span>
+                    <span class="race-badge__k">K</span>
+                  </span>
+                </div>
+              </div>
+              <span class="relative font-mono text-[11px] tracking-[1.5px] text-bone-40 uppercase">
+                {cat.name}
+              </span>
+            </div>
+
+            <div class="relative flex flex-col gap-4">
+              <div class="flex items-baseline gap-2">
+                <span class="font-body text-[27px] font-bold text-bone tabular-nums">
+                  {cat.priceLabel}
+                </span>
+                <span class="font-mono text-[10px] tracking-[1px] text-bone-40 uppercase">
+                  Regular rate
+                </span>
+              </div>
+
+              <p class="m-0 text-[18px] leading-[1.55] text-bone-88">{cat.blurb}</p>
+            </div>
+
+            {/* Gun start + cut-off — the two facts that decide the distance */}
+            <div class="relative grid grid-cols-2 gap-2">
+              <div class="rounded-lg bg-white/5 px-3 py-2.5">
+                <div class="font-mono text-[9px] tracking-[1px] text-bone-40 uppercase">
+                  Gun start
+                </div>
+                <div class="font-body text-[18px] font-semibold text-bone">
+                  {cat.gunStart}
+                </div>
+              </div>
+              <div class="rounded-lg bg-white/5 px-3 py-2.5">
+                <div class="font-mono text-[9px] tracking-[1px] text-bone-40 uppercase">
+                  Cut-off
+                </div>
+                <div class="font-body text-[18px] font-semibold text-bone">
+                  {cat.cutoff}
+                </div>
+              </div>
+            </div>
+
+            <div class="relative h-px w-full bg-white/10" />
+
+            <div class="relative flex flex-col items-start gap-2.5">
+              <div class="font-mono text-[10px] tracking-[1px] text-bone-40 uppercase">
+                Race kit
+              </div>
+              {cat.kit.map((item) => (
+                <div class="flex flex-row items-start gap-2.5 text-left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    class="race-card__check mt-0.5 h-4 w-4 flex-none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12.5l4.5 4.5L19 7.5"
+                      stroke="currentColor"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="text-[18px] leading-[1.45] text-bone-88">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href={event.registrationUrl}
+              target="_blank"
+              rel="noopener"
+              class="race-card__cta relative mt-auto flex h-[52px] items-center justify-center rounded-pill px-6 font-body text-[18px] font-bold text-white no-underline transition-[filter,transform] duration-[400ms] hover:brightness-110 active:scale-[0.98]"
+            >
+              Register for {cat.distance}
+            </a>
+
+            {/* Hint that the card turns over. Hidden from assistive tech:
+                the back's contents are in the page either way. */}
+            <span class="race-flip__hint" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5">
+                <path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M18 3v3.5h-3.5M6 21v-3.5h3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              See the race kit
+            </span>
+            </div>
+
+            {/* Back — the race kit artwork */}
+            <div class="race-card race-flip__face race-flip__back rounded-2xl p-7 max-[479px]:p-5">
+              <div class="race-kit__head">
+                <span class="race-kit__distance">{cat.distance}</span>
+                <span class="race-kit__title">Race kit entitlements</span>
+              </div>
+
+              <ul class="race-kit__grid">
+                {cat.kitItems.map((item) => {
+                  const src = art(cat.id, item.slug);
+                  return (
+                    <li class="race-kit__item">
+                      <span class="race-kit__art">
+                        {src && (
+                          <Image
+                            src={src}
+                            alt={item.label}
+                            widths={[180, 360]}
+                            sizes="120px"
+                            loading="lazy"
+                            decoding="async"
+                            class="race-kit__img"
+                          />
+                        )}
+                      </span>
+                      <span class="race-kit__label">{item.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div class="race-kit__extras">
+                <span class="race-kit__chip">Post-race meal</span>
+                <span class="race-kit__chip">1 raffle entry &middot; grand &amp; minor prizes</span>
+              </div>
+
+              <a
+                href={event.registrationUrl}
+                target="_blank"
+                rel="noopener"
+                class="race-card__cta race-kit__cta"
+              >
+                Register for {cat.distance}
+              </a>
+            </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <p
+      class="mt-8 text-center font-mono text-[11px] tracking-[0.5px] text-bone-40 uppercase"
+    >
+      Online registration only &middot; no walk-in or race-day entry &middot;
+      bibs are non-transferable
+    </p>
+  </div>
+</section>
+
+<script>
+  /* Touch devices have no hover, so there the card turns on tap instead —
+     and only there: on a mouse the card turns on hover and a click does
+     nothing, so it cannot get stuck open. Taps on the Register link pass
+     through, a second tap turns the card back, and one card is open at a
+     time. */
+  if (window.matchMedia("(hover: none)").matches) {
+    document.querySelectorAll<HTMLElement>("[data-flip]").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        if ((e.target as HTMLElement).closest("a")) return;
+        const open = card.classList.toggle("is-flipped");
+        if (open) {
+          document
+            .querySelectorAll<HTMLElement>("[data-flip].is-flipped")
+            .forEach((other) => other !== card && other.classList.remove("is-flipped"));
+        }
+      });
+    });
+  }
+</script>

@@ -1,0 +1,322 @@
+---
+/**
+ * Zeal — "Timeline Slider"
+ * https://zeal-timeline-slider.webflow.io/
+ *
+ * Preserved: the centred title over two synced rows — a strip of cards with
+ * the active one centred and its neighbours peeking in from either side,
+ * and a date track beneath it where a line runs behind a dot per entry, the
+ * active date and dot turn gold with a soft ring, and round prev/next
+ * buttons sit at either end. Clicking a date moves both rows.
+ *
+ * Adapted: the source runs two jQuery Slick instances linked with
+ * `asNavFor`. This site has no jQuery, so both rows are driven by one index
+ * in plain JS, positioned with transforms. The strip is draggable, and
+ * clicking a neighbouring card moves to it. The source's slides are image
+ * only; here each year also gets a caption under the track — title, date
+ * and place, distances and the story — because the history is the content.
+ *
+ * Every caption is rendered into the page, not injected on change, so the
+ * whole history is in the HTML for search engines and screen readers; the
+ * inactive ones are just hidden.
+ */
+import { history } from "../data/event";
+
+const last = history.length - 1;
+---
+
+<section
+  id="history"
+  class="pattern pattern--invert relative overflow-hidden bg-navy-950 py-[150px] max-[991px]:py-[120px] font-body max-[479px]:py-[96px]"
+  aria-roledescription="carousel"
+  aria-label="Cebu Marathon history, 2008 to 2027"
+  data-timeline
+>
+  <div class="feather-rule absolute inset-x-0 top-0 h-[3px]" aria-hidden="true"></div>
+
+  {/* Header */}
+  <div
+    data-reveal
+    class="relative z-[1] mx-auto mb-14 flex w-full max-w-[1400px] flex-col items-center gap-5 px-6 text-center max-[479px]:px-4"
+  >
+    <div
+      class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold-ghost px-5 font-mono text-[12px] font-medium tracking-[1.5px] text-gold uppercase"
+    >
+      Since 2008
+    </div>
+    <h2 class="headline m-0 font-display text-bone uppercase">
+      Nineteen years of <span class="script feather-text">running</span>
+    </h2>
+    <p class="m-0 max-w-[58ch] text-[18px] leading-[1.6] text-bone-64">
+      From a Sinulog-season half marathon on the streets of Cebu City to an
+      AIMS-certified course over the CCLEX. Drag the cards, or pick a year.
+    </p>
+  </div>
+
+  {/* Card strip — full bleed so the neighbours can peek in from the edges */}
+  <div data-reveal class="tl-frame relative z-[1] w-full">
+    <div class="tl-strip flex items-center" data-tl-strip>
+      {
+        history.map((h, i) => (
+          <button
+            type="button"
+            class:list={["tl-card", h.photo && "tl-card--photo"]}
+            data-tl-card={i}
+            aria-label={`${h.year}: ${h.title}`}
+            tabindex="-1"
+          >
+            {h.photo ? (
+              <>
+                <img
+                  src={h.photo}
+                  alt=""
+                  loading={i < 3 ? "eager" : "lazy"}
+                  decoding="async"
+                  class="tl-card__photo"
+                  draggable="false"
+                />
+                <span class="tl-card__shade" aria-hidden="true" />
+                <span class="tl-card__foot">
+                  <span class="tl-card__plate">
+                    {h.logo ? (
+                      <img src={h.logo} alt="" loading="lazy" decoding="async" class="tl-card__plate-logo" draggable="false" />
+                    ) : (
+                      <span class="tl-card__plate-type">Cebu Marathon</span>
+                    )}
+                  </span>
+                  <span class="tl-card__big-year" aria-hidden="true">{h.year}</span>
+                </span>
+                {h.credit && (
+                  <span class="tl-card__credit">Photo: {h.credit.name}</span>
+                )}
+              </>
+            ) : (
+              <>
+                <span class="tl-card__year" aria-hidden="true">
+                  {h.year}
+                </span>
+                {h.logo ? (
+                  <img
+                    src={h.logo}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="tl-card__logo"
+                    draggable="false"
+                  />
+                ) : (
+                  <span class="tl-card__type">
+                    <span class="tl-card__type-year">{h.year}</span>
+                    <span class="tl-card__type-name">Cebu Marathon</span>
+                  </span>
+                )}
+              </>
+            )}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  {/* Year track */}
+  <div class="relative z-[1] mx-auto mt-12 flex w-full max-w-[1060px] items-center gap-4 px-6 max-[479px]:gap-2 max-[479px]:px-3">
+    <button type="button" class="tl-arrow" data-tl-prev aria-label="Previous year">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-5 w-5">
+        <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <div class="tl-nav relative min-w-0 flex-1 overflow-hidden" data-tl-nav>
+      <div class="tl-line" aria-hidden="true"></div>
+      <div class="tl-nav__row flex" data-tl-row role="tablist" aria-label="Choose a year">
+        {
+          history.map((h, i) => (
+            <button
+              type="button"
+              role="tab"
+              class="tl-year"
+              data-tl-year={i}
+              aria-selected={i === 0 ? "true" : "false"}
+              aria-controls={`tl-panel-${h.year}`}
+              tabindex={i === 0 ? "0" : "-1"}
+            >
+              <span class="tl-year__label">{h.year}</span>
+              <span class="tl-year__dot" aria-hidden="true" />
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <button type="button" class="tl-arrow" data-tl-next aria-label="Next year">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-5 w-5">
+        <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  </div>
+
+  {/* Caption for the active year */}
+  <div class="relative z-[1] mx-auto mt-10 w-full max-w-[760px] px-6 text-center max-[479px]:px-4">
+    {
+      history.map((h, i) => (
+        <div
+          id={`tl-panel-${h.year}`}
+          role="tabpanel"
+          class="tl-panel"
+          data-tl-panel={i}
+          hidden={i !== 0}
+        >
+          <div class="font-mono text-[12px] tracking-[1.5px] text-bone-40 uppercase">
+            {h.when}
+          </div>
+          <h3 class="type-h4 mt-3 mb-0 font-display text-bone">
+            {h.title}
+          </h3>
+          {h.distances && (
+            <div class="mt-4 inline-flex h-8 items-center rounded-pill bg-white/8 px-4 font-mono text-[12px] tracking-[1px] text-aqua uppercase">
+              {h.distances}
+            </div>
+          )}
+          {h.body && (
+            <p class="mx-auto mt-4 mb-0 max-w-[58ch] text-[18px] leading-[1.6] text-bone-88">
+              {h.body}
+            </p>
+          )}
+          <div class="mt-5 font-mono text-[11px] tracking-[1.5px] text-bone-40 uppercase">
+            {i + 1} / {last + 1}
+            {h.credit?.url && (
+              <>
+                {" "}&middot;{" "}
+                <a href={h.credit.url} target="_blank" rel="noopener" class="text-bone-40 underline-offset-2 hover:text-gold hover:underline">
+                  Photo: {h.credit.name}
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-timeline]");
+
+  if (root) {
+    const strip = root.querySelector<HTMLElement>("[data-tl-strip]")!;
+    const frame = strip.parentElement as HTMLElement;
+    const cards = [...root.querySelectorAll<HTMLElement>("[data-tl-card]")];
+    const nav = root.querySelector<HTMLElement>("[data-tl-nav]")!;
+    const row = root.querySelector<HTMLElement>("[data-tl-row]")!;
+    const years = [...root.querySelectorAll<HTMLElement>("[data-tl-year]")];
+    const panels = [...root.querySelectorAll<HTMLElement>("[data-tl-panel]")];
+    const prev = root.querySelector<HTMLButtonElement>("[data-tl-prev]")!;
+    const next = root.querySelector<HTMLButtonElement>("[data-tl-next]")!;
+    const last = cards.length - 1;
+
+    let index = 0;
+    let stripX = 0;
+
+    // Centre an item inside its viewport. Both rows use the same rule, which
+    // is what keeps them in step the way Slick's asNavFor did in the source.
+    const centreOffset = (viewport: HTMLElement, item: HTMLElement) =>
+      viewport.clientWidth / 2 - (item.offsetLeft + item.offsetWidth / 2);
+
+    const render = () => {
+      stripX = centreOffset(frame, cards[index]);
+      strip.style.transform = `translate3d(${stripX}px,0,0)`;
+      row.style.transform = `translate3d(${centreOffset(nav, years[index])}px,0,0)`;
+
+      cards.forEach((c, i) => {
+        c.classList.toggle("is-active", i === index);
+        c.classList.toggle("is-near", Math.abs(i - index) === 1);
+      });
+      years.forEach((y, i) => {
+        const on = i === index;
+        y.classList.toggle("is-active", on);
+        y.setAttribute("aria-selected", String(on));
+        y.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((p, i) => (p.hidden = i !== index));
+      prev.disabled = index === 0;
+      next.disabled = index === last;
+    };
+
+    const go = (i: number) => {
+      index = Math.max(0, Math.min(last, i));
+      render();
+    };
+
+    prev.addEventListener("click", () => go(index - 1));
+    next.addEventListener("click", () => go(index + 1));
+    years.forEach((y, i) => y.addEventListener("click", () => go(i)));
+
+    // Arrow keys move the timeline from anywhere on the year track.
+    row.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); years[index].focus(); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); years[index].focus(); }
+      if (e.key === "Home") { e.preventDefault(); go(0); years[index].focus(); }
+      if (e.key === "End") { e.preventDefault(); go(last); years[index].focus(); }
+    });
+
+    // Drag the strip. The cards follow the pointer, then settle on whichever
+    // card ended up nearest the centre — a long throw can skip several years.
+    let startX = 0;
+    let dragging = false;
+    let moved = false;
+
+    frame.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      dragging = true;
+      moved = false;
+      startX = e.clientX;
+      strip.classList.add("is-dragging");
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 6) moved = true;
+      strip.style.transform = `translate3d(${stripX + dx}px,0,0)`;
+    });
+    const end = (e: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      strip.classList.remove("is-dragging");
+      const dx = e.clientX - startX;
+      if (!moved) return; // a plain click — let the card's own handler run
+      const step = cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : 1;
+      const skip = Math.round(-dx / step) || (Math.abs(dx) > 50 ? -Math.sign(dx) : 0);
+      go(index + skip);
+    };
+    window.addEventListener("pointerup", end);
+    // A cancel is the browser taking the gesture back (usually a vertical
+    // scroll on touch). Its coordinates can't be trusted, so snap back to
+    // the current card instead of reading it as a drag.
+    window.addEventListener("pointercancel", () => {
+      if (!dragging) return;
+      dragging = false;
+      moved = false;
+      strip.classList.remove("is-dragging");
+      render();
+    });
+
+    // A click on a neighbouring card moves to it; a drag that ends over a
+    // card must not also count as a click on it.
+    cards.forEach((c, i) =>
+      c.addEventListener("click", (e) => {
+        if (moved) { e.preventDefault(); return; }
+        go(i);
+      }),
+    );
+
+    let raf = 0;
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(render);
+    });
+
+    render();
+    // The logo images are lazy, so card widths can settle after first paint.
+    window.addEventListener("load", render);
+  }
+</script>
