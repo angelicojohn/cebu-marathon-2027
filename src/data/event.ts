@@ -290,6 +290,8 @@ export const organisers = {
  * years have none there, so their slide is set in type instead.
  *
  * `photo` is a race-day photo for that edition where one could be found.
+ * 2010, 2011, 2013, 2018, 2020, 2024 and 2025 are from the official
+ * Cebu Marathon Facebook albums.
  * 2025 and 2027 are the organiser's own drone photography; the rest come
  * from news outlets and running blogs and are credited on the card — they
  * need the owner's permission before this goes live. 2015's photo comes
@@ -307,13 +309,15 @@ export const history = [
   {
     year: "2010",
     photo: "/images/history/photo-2010.jpg",
-    credit: { name: "Bald Runner", url: "https://baldrunner.com/2010/01/10/perfect-race-in-cebu-city/" },
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "The first full marathon",
     when: "10 January 2010 · Cebu City",
     body: "Known as “01-10-10”, the first official full Cebu Marathon introduced the 42K distance and established Cebu as a marathon destination.",
   },
   {
     year: "2011",
+    photo: "/images/history/photo-2011.jpg",
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "An annual January race",
     when: "January 2011 · Cebu City",
     distances: "42K, 21K, 10K, 5K",
@@ -327,6 +331,8 @@ export const history = [
   },
   {
     year: "2013",
+    photo: "/images/history/photo-2013.jpg",
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "Results go online",
     when: "13 January 2013 · Cebu City streets",
     logo: "/images/history/2013.png",
@@ -363,6 +369,8 @@ export const history = [
   },
   {
     year: "2018",
+    photo: "/images/history/photo-2018.jpg",
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "Through Cebu Business Park",
     when: "14 January 2018 · Cebu City, including Cebu Business Park",
     logo: "/images/history/2018.png",
@@ -379,7 +387,7 @@ export const history = [
   {
     year: "2020",
     photo: "/images/history/photo-2020.jpg",
-    credit: { name: "SunStar Cebu", url: "https://www.sunstar.com.ph/cebu/sports/love-reigns-in-cebu-marathon" },
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "Pre-pandemic milestone",
     when: "12 January 2020 · Cebu City (CBP and major city roads)",
     logo: "/images/history/2020.png",
@@ -410,7 +418,7 @@ export const history = [
   {
     year: "2024",
     photo: "/images/history/photo-2024.jpg",
-    credit: { name: "Speed.ph", url: "https://www.speed.ph/" },
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "AIA Vitality Cebu Marathon",
     when: "14 January 2024 · Cebu City",
     distances: "42K, 24K, 12K, 6K",
@@ -420,7 +428,7 @@ export const history = [
   {
     year: "2025",
     photo: "/images/history/photo-2025.jpg",
-    credit: { name: "Cebu Marathon" },
+    credit: { name: "Cebu Marathon", url: "https://www.facebook.com/CebuMarathonOfficial/photos" },
     title: "The largest yet",
     when: "January 2025 · SM Seaside City Cebu & Cebu City roads",
     distances: "42K, 24K, 12K, 6K",
