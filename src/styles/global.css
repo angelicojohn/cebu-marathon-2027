@@ -895,6 +895,131 @@ body {
   .player__volume { display: none; }
 }
 
+/* Training runs: once a run's date has passed the whole row is muted and
+   the club is struck through, with a small "Done" tag. */
+.run {
+  transition: opacity 300ms ease;
+}
+.run__done {
+  display: none;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: #ffffff1a;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+  color: var(--color-bone-64);
+}
+.run.is-done {
+  opacity: 0.42;
+}
+.run.is-done .run__name {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+.run.is-done .run__done {
+  display: inline-block;
+}
+
+/* "Already done" photo strip, full bleed under the perks. */
+.moments {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.moments__track {
+  display: flex;
+  width: max-content;
+  animation: moments 70s linear infinite;
+}
+.moments:hover .moments__track {
+  animation-play-state: paused;
+}
+@keyframes moments {
+  to { transform: translateX(-50%); }
+}
+.moments__item {
+  position: relative;
+  flex: none;
+  width: 360px;
+  margin: 0 20px 0 0;
+  overflow: hidden;
+  border-radius: 16px;
+  aspect-ratio: 3 / 2;
+  background: var(--color-navy-900);
+}
+.moments__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.moments__item {
+  display: block;
+  text-decoration: none;
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 400ms ease;
+}
+.moments__item img {
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.moments__item:hover,
+.moments__item:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 36px -18px #01143a99;
+}
+.moments__item:hover img,
+.moments__item:focus-visible img {
+  transform: scale(1.05);
+}
+/* "View on Facebook" pill, centred, appears on hover. */
+.moments__view {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-navy-ink);
+  opacity: 0;
+  transform: translate(-50%, -40%);
+  transition: opacity 250ms ease, transform 300ms ease;
+  pointer-events: none;
+}
+.moments__view svg { width: 16px; height: 16px; color: #1877f2; }
+.moments__item:hover .moments__view,
+.moments__item:focus-visible .moments__view {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+.moments__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 28px 16px 12px;
+  background: linear-gradient(180deg, #01143a00, #01143ad9);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+@media (max-width: 479px) {
+  .moments__item { width: 260px; margin-right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .moments__track { animation: none; }
+}
+
 /* Footer social links: round, quiet until hovered. */
 .footer-social {
   display: grid;

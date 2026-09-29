@@ -171,12 +171,12 @@ export const bento = {
   route: {
     title: "Over the CCLEX at sunrise",
     body: "Cebu City, Cordova and CCLEX Management signed a memorandum putting the Cebu–Cordova Link Expressway into the official 2027 route. The 42K and 21K cross the longest and tallest bridge in the Philippines.",
-    image: "/images/route-42k.webp",
+    image: "/images/cclex-runners.webp",
   },
   kit: {
     title: "Every distance gets a medal",
     body: "Race shirt, finisher shirt by Salt+Fin, race bag and finisher medal in every category. The 42K and 21K add a finisher towel.",
-    image: "/images/kit-42k.webp",
+    image: "/images/kit-booth.webp",
   },
   raffle: {
     title: "Win a Jaecoo J5 Super Hybrid",
@@ -229,14 +229,15 @@ export const faqs = [
    2026: GU joined the majors, GraphicStar is no longer listed, and
    Nature's Spring and NuStar moved to minor.
 
-   `w`/`h` are each logo's real pixel size, used by the marquee to scale
+   `w`/`h` are each logo's real pixel size (files trimmed to the artwork), and
+   `boost` enlarges thin, light marks that read small next to solid ones; used by the marquee to scale
    them to the same optical size — a wide, short logo and a square one look
    wildly different when both are simply capped to the same height. */
 export const sponsors = {
   presenter: [
-    { name: "Cebu Landmasters, Inc.", logo: "/images/sponsor-cebu-landmasters.png", w: 420, h: 144 },
+    { name: "Cebu Landmasters, Inc.", logo: "/images/sponsor-cebu-landmasters.png", w: 404, h: 124, boost: 1.35 },
   ],
-  vehicle: [{ name: "OMODA JAECOO", logo: "/images/sponsor-omoda-jaecoo.png", w: 420, h: 33 }],
+  vehicle: [{ name: "OMODA JAECOO", logo: "/images/sponsor-omoda-jaecoo.png", w: 378, h: 22, boost: 1.3 }],
   major: [
     { name: "ImmuniPlus", logo: "/images/sponsor-immuniplus.png", w: 600, h: 128 },
     { name: "Pocari Sweat", logo: "/images/sponsor-pocari-sweat.png", w: 175, h: 122 },
@@ -244,10 +245,10 @@ export const sponsors = {
   ],
   minor: [
     { name: "Nature's Spring", logo: "/images/sponsor-natures-spring.png", w: 170, h: 100 },
-    { name: "NUSTAR", logo: "/images/sponsor-nustar.png", w: 228, h: 128 },
+    { name: "NUSTAR", logo: "/images/sponsor-nustar.png", w: 141, h: 100, boost: 1.45 },
     { name: "Hello Glow", logo: "/images/sponsor-hello-glow.png", w: 359, h: 103 },
     { name: "Leonas", logo: "/images/sponsor-leonas.png", w: 180, h: 180 },
-    { name: "Omega Active", logo: "/images/sponsor-omega-active.png", w: 284, h: 135 },
+    { name: "Omega Active", logo: "/images/sponsor-omega-active.png", w: 284, h: 132 },
   ],
   venue: [
     { name: "SM Seaside City Cebu", logo: "/images/sponsor-sm-seaside.png", w: 258, h: 36 },
@@ -480,17 +481,18 @@ export const hotels = [
  * cebumarathon.com.ph/community. Venues are listed only where the live page
  * gives one.
  */
+/* `on` is the run's date, used to mark it done once it has passed. */
 export const trainingRuns = [
-  { date: "22 Aug", km: 16, time: "4:00 AM", club: "Guild of Runners", venue: "The Astra Center" },
-  { date: "5 Sep", km: 21, time: "4:00 AM", club: "Mandaue Runners Group", venue: "Mandaue City Hall" },
-  { date: "27 Sep", km: 26, time: "3:30 AM", club: "RWP Cebu" },
-  { date: "4 Oct", km: 18, time: "4:00 AM", club: "Guild of Runners" },
-  { date: "17 Oct", km: 21, time: "4:00 AM", club: "Mandaue Runners Group" },
-  { date: "15 Nov", km: 30, time: "3:00 AM", club: "Mandaue Runners Group" },
-  { date: "22 Nov", km: 24, time: "3:30 AM", club: "RWP Cebu" },
-  { date: "13 Dec", km: 32, time: "3:00 AM", club: "Guild of Runners" },
-  { date: "20 Dec", km: 21, time: "4:00 AM", club: "Mandaue Runners Group" },
-  { date: "9 Jan", km: 5, time: "5:00 AM", club: "All run clubs", shakeout: true /* the day before race day */ },
+  { date: "22 Aug", on: "2026-08-22", km: 16, time: "4:00 AM", club: "Guild of Runners", venue: "The Astra Center" },
+  { date: "5 Sep", on: "2026-09-05", km: 21, time: "4:00 AM", club: "Mandaue Runners Group", venue: "Mandaue City Hall" },
+  { date: "27 Sep", on: "2026-09-27", km: 26, time: "3:30 AM", club: "RWP Cebu" },
+  { date: "4 Oct", on: "2026-10-04", km: 18, time: "4:00 AM", club: "Guild of Runners" },
+  { date: "17 Oct", on: "2026-10-17", km: 21, time: "4:00 AM", club: "Mandaue Runners Group" },
+  { date: "15 Nov", on: "2026-11-15", km: 30, time: "3:00 AM", club: "Mandaue Runners Group" },
+  { date: "22 Nov", on: "2026-11-22", km: 24, time: "3:30 AM", club: "RWP Cebu" },
+  { date: "13 Dec", on: "2026-12-13", km: 32, time: "3:00 AM", club: "Guild of Runners" },
+  { date: "20 Dec", on: "2026-12-20", km: 21, time: "4:00 AM", club: "Mandaue Runners Group" },
+  { date: "9 Jan", on: "2027-01-09", km: 5, time: "5:00 AM", club: "All run clubs", shakeout: true /* the day before race day */ },
 ];
 
 /**
@@ -535,3 +537,17 @@ export const prizes = {
     { label: "Female", note: "42K only", amount: 3000 },
   ],
 };
+
+/** Photos from events already held, for the strip under the perks.
+ *  `post` is the Facebook post each photo was published in. */
+export const moments = [
+  { src: "/images/moments/launch-1.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "Launch · 13 Aug" },
+  { src: "/images/moments/launch-2.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "Press conference" },
+  { src: "/images/moments/launch-3.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "Race kit reveal" },
+  { src: "/images/moments/launch-4.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "Race shirt & finisher shirt" },
+  { src: "/images/moments/launch-5.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "The 2027 finisher medal" },
+  { src: "/images/moments/launch-6.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "The Jaecoo J5 raffle prize" },
+  { src: "/images/moments/launch-7.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "Partners on stage" },
+  { src: "/images/moments/launch-8.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid028YL9hMgCyDrZUQyV7M34H6x1CxkMJMLkmxSUF1fjyCWEpbV5sHhibrQdZBMa8xhcl", caption: "Cebu's run clubs" },
+  { src: "/images/moments/launch-9.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid028YL9hMgCyDrZUQyV7M34H6x1CxkMJMLkmxSUF1fjyCWEpbV5sHhibrQdZBMa8xhcl", caption: "Finisher towel" },
+];

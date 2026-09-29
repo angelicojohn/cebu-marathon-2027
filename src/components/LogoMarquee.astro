@@ -24,9 +24,9 @@ import ScatterIcons from "./ScatterIcons.astro";
  * though both are "36px". Holding the geometric mean roughly constant
  * evens them out; the clamp keeps the extremes sensible.
  */
-const opticalHeight = (w: number, h: number) => {
+const opticalHeight = (w: number, h: number, boost = 1) => {
   const ratio = w / h;
-  return Math.round(Math.min(58, Math.max(24, 62 / Math.sqrt(ratio))));
+  return Math.round(Math.min(64, Math.max(26, (62 * boost) / Math.sqrt(ratio))));
 };
 
 /* Two identical halves, each holding the logo set twice so a single half is
@@ -63,8 +63,8 @@ const track = [...half, ...half];
               loading="lazy"
               width={logo.w}
               height={logo.h}
-              style={`height:${opticalHeight(logo.w, logo.h)}px`}
-              class="w-auto max-w-[190px] object-contain max-[767px]:max-w-[150px]"
+              style={`height:${opticalHeight(logo.w, logo.h, logo.boost)}px`}
+              class="w-auto max-w-[280px] object-contain max-[767px]:max-w-[200px]"
             />
           </div>
         ))
