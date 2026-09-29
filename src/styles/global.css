@@ -650,9 +650,11 @@ body {
    feathers fan up behind the car the way they do on the poster. */
 .raffle-tile__stage {
   position: absolute;
-  right: -9%;
-  bottom: -3%;
-  width: 112%;
+  /* Held just inside the bottom edge so both wheels sit whole; it still
+     runs off the right side, where only the rear of the car is cropped. */
+  right: -6%;
+  bottom: 3%;
+  width: 104%;
   aspect-ratio: 1977 / 1100;
   pointer-events: none;
 }

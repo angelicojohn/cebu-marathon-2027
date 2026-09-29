@@ -15,9 +15,6 @@ Updated Hero Video/
 Race Kit Entitlements/
 bg pattern assets/
 
-# Over GitHub's 100MB limit; a compressed version will replace it
-public/video/hero-2027.mp4
-
 # Design source files that are not served by the site
 *.otf
 Leaves.svg
