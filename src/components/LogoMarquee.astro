@@ -63,8 +63,8 @@ const track = [...half, ...half];
               loading="lazy"
               width={logo.w}
               height={logo.h}
-              style={`height:${opticalHeight(logo.w, logo.h, logo.boost)}px`}
-              class="w-auto max-w-[280px] object-contain max-[767px]:max-w-[200px]"
+              style={`--h:${opticalHeight(logo.w, logo.h, logo.boost)}px`}
+              class="marquee-logo w-auto max-w-[280px] object-contain max-[767px]:max-w-[200px]"
             />
           </div>
         ))
@@ -88,6 +88,17 @@ const track = [...half, ...half];
 
   .marquee-track {
     animation: marquee 80s linear infinite;
+  }
+
+  /* Each logo's optical height, scaled down on phones so the tallest
+     (NuStar, at 64px) still sits inside the 60px row there. */
+  .marquee-logo {
+    height: var(--h);
+  }
+  @media (max-width: 767px) {
+    .marquee-logo {
+      height: calc(var(--h) * 0.78);
+    }
   }
 
   /* The track holds two identical halves, so -50% is exactly one loop. */

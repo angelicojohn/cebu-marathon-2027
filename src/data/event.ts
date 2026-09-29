@@ -245,7 +245,7 @@ export const sponsors = {
   ],
   minor: [
     { name: "Nature's Spring", logo: "/images/sponsor-natures-spring.png", w: 170, h: 100 },
-    { name: "NUSTAR", logo: "/images/sponsor-nustar.png", w: 141, h: 100, boost: 1.45 },
+    { name: "NUSTAR", logo: "/images/sponsor-nustar.png", w: 151, h: 110, boost: 1.45 },
     { name: "Hello Glow", logo: "/images/sponsor-hello-glow.png", w: 359, h: 103 },
     { name: "Leonas", logo: "/images/sponsor-leonas.png", w: 180, h: 180 },
     { name: "Omega Active", logo: "/images/sponsor-omega-active.png", w: 284, h: 132 },
