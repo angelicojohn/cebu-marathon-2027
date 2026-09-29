@@ -300,8 +300,10 @@ body {
      in "day" — drop well below the baseline and were fading out past the
      box's edge. The bottom padding covers them; the matching negative
      margin keeps it out of the line spacing. */
-  padding: 0.1em 0.08em 0.36em;
-  margin: -0.1em 0.02em -0.36em;
+  /* Left too: Dirtylane's p and f tails swing back past the start of the
+     word, so the box needs room on that side as well. */
+  padding: 0.1em 0.1em 0.5em 0.4em;
+  margin: -0.1em 0.02em -0.5em -0.38em;
   vertical-align: baseline;
   transform: translateY(0.02em);
   /* A tight, near-solid lift like the race posters' lettering: short offset,
