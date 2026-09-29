@@ -1619,8 +1619,51 @@ body {
   text-decoration: none;
 }
 
-@media (max-width: 479px) {
-  .race-kit__grid { min-height: 230px; }
+/* Phones and small tablets: the scattered, oversized layout needs a wide
+   card. Here the kit settles into a tidy two-column grid instead — the
+   medal still leads across the top — so no two pieces overlap. The float
+   and the glow stay; only the placement changes. */
+@media (max-width: 767px) {
+  .race-kit__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 12px;
+    min-height: 0;
+    align-content: start;
+  }
+  .race-kit__item,
+  .race-kit__item:nth-child(n) {
+    position: relative;
+    inset: auto;
+    width: auto;
+    z-index: auto;
+    --rot: 0deg;
+  }
+  .race-kit__item:nth-child(1) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 46%;
+  }
+  .race-kit__art {
+    height: 92px;
+  }
+  .race-kit__item:nth-child(1) .race-kit__art {
+    height: 120px;
+  }
+  .race-kit__img {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .race-kit__label {
+    font-size: 10px;
+    white-space: normal;
+  }
+  .race-flip__back {
+    gap: 10px;
+    overflow: hidden;
+  }
 }
 
 /* Without hover (touch), the card turns on tap via the script instead. */
