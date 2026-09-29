@@ -55,7 +55,7 @@ const columns = [
             width="720"
             height="279"
             loading="lazy"
-            class="h-[112px] w-auto max-[767px]:h-[88px]"
+            class="h-[112px] w-auto max-[767px]:h-auto max-[767px]:w-full max-[767px]:max-w-[340px]"
           />
           <p class="m-0 text-[18px] leading-[1.6] text-bone-64">
             Sunday, 10 January 2027 &middot; SM Seaside City Cebu and the CCLEX.
@@ -104,7 +104,7 @@ const columns = [
               width={organisers.organisedBy.w}
               height={organisers.organisedBy.h}
               loading="lazy"
-              class="h-[58px] w-auto"
+              class="h-[58px] w-auto max-[767px]:h-[38px]"
             />
             <span class="text-[16px] leading-[1.3] text-bone-64">in partnership<br />with</span>
             <img
@@ -113,7 +113,7 @@ const columns = [
               width={organisers.partner.w}
               height={organisers.partner.h}
               loading="lazy"
-              class="h-[64px] w-auto"
+              class="h-[64px] w-auto max-[767px]:h-[42px]"
             />
           </div>
         </div>
@@ -130,7 +130,7 @@ const columns = [
                   width={b.w}
                   height={b.h}
                   loading="lazy"
-                  class="h-[64px] w-auto"
+                  class="h-[64px] w-auto max-[767px]:h-[42px]"
                 />
               ))
             }
