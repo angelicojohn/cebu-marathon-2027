@@ -1022,6 +1022,20 @@ body {
   .moments__track { animation: none; }
 }
 
+/* Sponsor marquee: each logo's optical height comes in as --h on the
+   element; phones scale it down so the tallest still fits the 60px row.
+   Kept here rather than in the component's scoped styles, which were not
+   reaching the images. */
+.marquee-logo {
+  height: var(--h);
+  width: auto;
+}
+@media (max-width: 767px) {
+  .marquee-logo {
+    height: calc(var(--h) * 0.78);
+  }
+}
+
 /* Footer social links: round, quiet until hovered. */
 .footer-social {
   display: grid;
