@@ -30,14 +30,14 @@ const from = (h: (typeof hotels)[number]) =>
   <div class="relative z-[1] mx-auto w-full max-w-[1400px] px-6 max-[479px]:px-4">
     <div data-reveal class="mb-14 flex flex-col items-center gap-5 text-center">
       <div
-        class="flex h-8 items-center justify-center rounded-pill border border-navy-ink/20 px-5 font-mono text-[13px] font-medium tracking-[1.5px] uppercase"
+        class="flex h-8 items-center justify-center rounded-pill border border-navy-ink/20 px-5 font-mono text-[0.8125rem] font-medium tracking-[1.5px] uppercase"
       >
         Perks &amp; offers
       </div>
       <h2 class="headline m-0 font-display text-navy-ink uppercase">
         More than <span class="script feather-text">race day</span>
       </h2>
-      <p class="m-0 max-w-[58ch] text-[18px] leading-[1.6] text-navy-ink/85">
+      <p class="m-0 max-w-[58ch] text-[1.125rem] leading-[1.6] text-navy-ink/85">
         Registering gets you into ten free training runs with Cebu's run
         clubs, and runner rates at partner hotels.
       </p>
@@ -48,11 +48,11 @@ const from = (h: (typeof hotels)[number]) =>
       <div data-reveal class="flex flex-col rounded-2xl bg-navy-950 p-8 text-bone max-[479px]:p-6">
         <div class="flex items-baseline justify-between gap-4">
           <h3 class="type-h4 m-0 font-display text-bone uppercase">Free training runs</h3>
-          <span class="font-mono text-[12px] tracking-[1.5px] text-aqua uppercase">
+          <span class="font-mono text-[0.75rem] tracking-[1.5px] text-aqua uppercase">
             {upcoming} of {trainingRuns.length} to go
           </span>
         </div>
-        <p class="mt-3 mb-6 text-[18px] leading-[1.55] text-bone-64">
+        <p class="mt-3 mb-6 text-[1.125rem] leading-[1.55] text-bone-64">
           Free and exclusive to CM27 registered runners. The long runs build
           through the season to a 32K in December, then every club runs a 5K
           together the day before the race.
@@ -68,22 +68,22 @@ const from = (h: (typeof hotels)[number]) =>
                   isDone(r.on) && "is-done",
                 ]}
               >
-                <span class="font-display text-[18px] font-black whitespace-nowrap text-bone uppercase max-[479px]:text-[15px]">
+                <span class="font-display text-[1.125rem] font-black whitespace-nowrap text-bone uppercase max-[479px]:text-[0.9375rem]">
                   {r.date}
                 </span>
                 <span class:list={[
-                  "inline-flex h-8 items-center justify-center rounded-pill font-display text-[15px] font-black tabular-nums",
+                  "inline-flex h-8 items-center justify-center rounded-pill font-display text-[0.9375rem] font-black tabular-nums",
                   r.shakeout ? "bg-gold text-white" : "bg-white/10 text-aqua",
                 ]}>
                   {r.km}K
                 </span>
                 <span class="min-w-0">
-                  <span class="block text-[16px] font-semibold text-bone">
+                  <span class="block text-[1rem] font-semibold text-bone">
                     <span class="run__name">{r.club}</span>
                     {r.shakeout && <span class="font-normal text-bone-64"> · the day before the race</span>}
                     <span class="run__done">Done</span>
                   </span>
-                  <span class="block font-mono text-[12px] tracking-[1px] text-bone-40 uppercase">
+                  <span class="block font-mono text-[0.75rem] tracking-[1px] text-bone-40 uppercase">
                     {r.time}
                     {r.venue && <> &middot; {r.venue}</>}
                   </span>
@@ -98,11 +98,11 @@ const from = (h: (typeof hotels)[number]) =>
       <div data-reveal data-reveal-delay="120ms" class="flex flex-col rounded-2xl bg-cream-card p-8 shadow-[0_20px_50px_-30px_#01143a55] max-[479px]:p-6">
         <div class="flex items-baseline justify-between gap-4">
           <h3 class="type-h4 m-0 font-display text-navy-ink uppercase">Runner hotel rates</h3>
-          <span class="font-mono text-[12px] tracking-[1.5px] text-rose uppercase">
+          <span class="font-mono text-[0.75rem] tracking-[1.5px] text-rose uppercase">
             Save up to ₱300
           </span>
         </div>
-        <p class="mt-3 mb-6 text-[18px] leading-[1.55] text-navy-ink/85">
+        <p class="mt-3 mb-6 text-[1.125rem] leading-[1.55] text-navy-ink/85">
           Show your Cebu Marathon registration confirmation code when you book
           direct with the hotel. Rates are per night.
         </p>
@@ -113,8 +113,8 @@ const from = (h: (typeof hotels)[number]) =>
               <li class="border-t border-navy-ink/10">
                 {h.soon ? (
                   <div class="flex items-center justify-between gap-4 py-4">
-                    <span class="text-[17px] font-semibold">{h.name}</span>
-                    <span class="font-mono text-[12px] tracking-[1px] text-navy-ink/45 uppercase">
+                    <span class="text-[1.0625rem] font-semibold">{h.name}</span>
+                    <span class="font-mono text-[0.75rem] tracking-[1px] text-navy-ink/45 uppercase">
                       Rates coming soon
                     </span>
                   </div>
@@ -122,19 +122,19 @@ const from = (h: (typeof hotels)[number]) =>
                   <details class="group">
                     <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
                       <span class="min-w-0">
-                        <span class="block text-[17px] font-semibold">{h.name}</span>
+                        <span class="block text-[1.0625rem] font-semibold">{h.name}</span>
                         {h.note && (
-                          <span class="block font-mono text-[12px] tracking-[1px] text-navy-ink/50 uppercase">
+                          <span class="block font-mono text-[0.75rem] tracking-[1px] text-navy-ink/50 uppercase">
                             {h.note}
                           </span>
                         )}
                       </span>
                       <span class="flex flex-none items-center gap-3">
                         <span class="text-right">
-                          <span class="block font-mono text-[10px] tracking-[1px] text-navy-ink/45 uppercase">
+                          <span class="block font-mono text-[0.625rem] tracking-[1px] text-navy-ink/45 uppercase">
                             {h.rates.length > 1 ? "From" : "Runner rate"}
                           </span>
-                          <span class="block text-[18px] font-bold tabular-nums">{peso(from(h))}</span>
+                          <span class="block text-[1.125rem] font-bold tabular-nums">{peso(from(h))}</span>
                         </span>
                         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-4 w-4 flex-none text-navy-ink/40 transition-transform duration-300 group-open:rotate-180">
                           <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
@@ -143,7 +143,7 @@ const from = (h: (typeof hotels)[number]) =>
                     </summary>
                     <ul class="m-0 mb-4 flex list-none flex-col gap-2 rounded-xl bg-cream-soft p-4">
                       {h.rates.map((r) => (
-                        <li class="flex items-baseline justify-between gap-4 text-[16px]">
+                        <li class="flex items-baseline justify-between gap-4 text-[1rem]">
                           <span class="text-navy-ink/85">{r.room}</span>
                           <span class="flex-none tabular-nums">
                             <s class="mr-2 text-navy-ink/35">{peso(r.was)}</s>
@@ -159,7 +159,7 @@ const from = (h: (typeof hotels)[number]) =>
           }
         </ul>
 
-        <p class="mt-auto border-t border-navy-ink/10 pt-5 text-[14px] leading-[1.5] text-navy-ink/50">
+        <p class="mt-auto border-t border-navy-ink/10 pt-5 text-[0.875rem] leading-[1.5] text-navy-ink/50">
           Cebu Marathon acts only as a hotel referral. Bookings, changes,
           cancellations and refunds follow each hotel's own policy.
         </p>

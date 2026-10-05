@@ -25,7 +25,7 @@ import ScatterIcons from "./ScatterIcons.astro";
       {/* Left */}
       <div data-reveal class="flex flex-col items-start gap-5">
         <div
-          class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold/15 px-5 font-mono text-[13px] font-medium tracking-[1.5px] text-gold-deep uppercase"
+          class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold/15 px-5 font-mono text-[0.8125rem] font-medium tracking-[1.5px] text-gold-deep uppercase"
         >
           FAQ
         </div>
@@ -34,13 +34,13 @@ import ScatterIcons from "./ScatterIcons.astro";
         >
           You ask,<br /><span class="script feather-text">we answer</span>
         </h2>
-        <p class="m-0 max-w-[40ch] text-[18px] leading-[1.6] text-navy-ink/85">
+        <p class="m-0 max-w-[40ch] text-[1.125rem] leading-[1.6] text-navy-ink/85">
           Still stuck? Message the race office on Facebook, or email us — we
           answer within a working day.
         </p>
         <a
           href={`mailto:${event.infoEmail}`}
-          class="mt-2 inline-flex h-12 items-center justify-center rounded-pill bg-gold-deep px-7 font-body text-[18px] font-bold text-white no-underline transition-colors duration-300 hover:bg-gold"
+          class="mt-2 inline-flex h-12 items-center justify-center rounded-pill bg-gold-deep px-7 font-body text-[1.125rem] font-bold text-white no-underline transition-colors duration-300 hover:bg-gold"
         >
           Email the race office
         </a>
@@ -81,7 +81,7 @@ import ScatterIcons from "./ScatterIcons.astro";
                 class:list={["faq-panel", i === 0 && "is-open"]}
               >
                 <div class="faq-panel__inner">
-                  <p class="mt-0 mb-0 pt-3 text-[18px] leading-[1.6] text-navy-ink/85">
+                  <p class="mt-0 mb-0 pt-3 text-[1.125rem] leading-[1.6] text-navy-ink/85">
                     {faq.a}
                   </p>
                 </div>

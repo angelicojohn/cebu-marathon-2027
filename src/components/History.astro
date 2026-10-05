@@ -40,14 +40,14 @@ const last = history.length - 1;
     class="relative z-[1] mx-auto mb-14 flex w-full max-w-[1400px] flex-col items-center gap-5 px-6 text-center max-[479px]:px-4"
   >
     <div
-      class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold-ghost px-5 font-mono text-[12px] font-medium tracking-[1.5px] text-gold uppercase"
+      class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold-ghost px-5 font-mono text-[0.75rem] font-medium tracking-[1.5px] text-gold uppercase"
     >
       Since 2008
     </div>
     <h2 class="headline m-0 font-display text-bone uppercase">
       Nineteen years of <span class="script feather-text">running</span>
     </h2>
-    <p class="m-0 max-w-[58ch] text-[18px] leading-[1.6] text-bone-64">
+    <p class="m-0 max-w-[58ch] text-[1.125rem] leading-[1.6] text-bone-64">
       From a Sinulog-season half marathon on the streets of Cebu City to an
       AIMS-certified course over the CCLEX. Drag the cards, or pick a year.
     </p>
@@ -166,23 +166,23 @@ const last = history.length - 1;
           data-tl-panel={i}
           hidden={i !== 0}
         >
-          <div class="font-mono text-[12px] tracking-[1.5px] text-bone-40 uppercase">
+          <div class="font-mono text-[0.75rem] tracking-[1.5px] text-bone-40 uppercase">
             {h.when}
           </div>
           <h3 class="type-h4 mt-3 mb-0 font-display text-bone">
             {h.title}
           </h3>
           {h.distances && (
-            <div class="mt-4 inline-flex h-8 items-center rounded-pill bg-white/8 px-4 font-mono text-[12px] tracking-[1px] text-aqua uppercase">
+            <div class="mt-4 inline-flex h-8 items-center rounded-pill bg-white/8 px-4 font-mono text-[0.75rem] tracking-[1px] text-aqua uppercase">
               {h.distances}
             </div>
           )}
           {h.body && (
-            <p class="mx-auto mt-4 mb-0 max-w-[58ch] text-[18px] leading-[1.6] text-bone-88">
+            <p class="mx-auto mt-4 mb-0 max-w-[58ch] text-[1.125rem] leading-[1.6] text-bone-88">
               {h.body}
             </p>
           )}
-          <div class="mt-5 font-mono text-[11px] tracking-[1.5px] text-bone-40 uppercase">
+          <div class="mt-5 font-mono text-[0.6875rem] tracking-[1.5px] text-bone-40 uppercase">
             {i + 1} / {last + 1}
             {h.credit?.url && (
               <>

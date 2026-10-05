@@ -47,14 +47,14 @@ const vars = paletteVars;
     {/* Centre heading */}
     <div data-reveal class="mb-[64px] flex flex-col items-center gap-5 text-center">
       <div
-        class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold-ghost px-5 font-mono text-[12px] font-medium tracking-[1.5px] text-gold uppercase"
+        class="flex h-8 items-center justify-center rounded-pill border border-gold bg-gold-ghost px-5 font-mono text-[0.75rem] font-medium tracking-[1.5px] text-gold uppercase"
       >
         Choose your distance
       </div>
       <h2 class="headline m-0 font-display text-bone uppercase">
         Four races, <span class="script feather-text">one</span> finish line
       </h2>
-      <p class="m-0 max-w-[62ch] text-[18px] leading-[1.6] text-bone-64">
+      <p class="m-0 max-w-[62ch] text-[1.125rem] leading-[1.6] text-bone-64">
         Every category finishes at SM Seaside City Cebu, and every category
         comes with a finisher medal. Registration runs to{" "}
         <strong class="font-semibold text-bone">{event.registrationCloses}</strong>,
@@ -65,7 +65,7 @@ const vars = paletteVars;
     {/* Hint: the cards turn over. */}
     <p
       data-reveal
-      class="mb-10 flex items-center justify-center gap-3 text-center font-mono text-[12px] tracking-[1.5px] text-bone-64 uppercase"
+      class="mb-10 flex items-center justify-center gap-3 text-center font-mono text-[0.75rem] tracking-[1.5px] text-bone-64 uppercase"
     >
 
       <span class="kit-hint--hover">Hover a card to see its race kit</span>
@@ -103,7 +103,7 @@ const vars = paletteVars;
               aria-hidden="true"
             >
               <div class="race-card__rule absolute inset-x-0 top-0 h-1 opacity-85 transition-opacity duration-[400ms] group-hover:opacity-100" />
-              <span class="race-card__ghost absolute -right-4 -bottom-6 font-condensed text-[132px] leading-none opacity-[0.06] transition-opacity duration-[400ms] select-none group-hover:opacity-[0.12]">
+              <span class="race-card__ghost absolute -right-4 -bottom-6 font-condensed text-[8.25rem] leading-none opacity-[0.06] transition-opacity duration-[400ms] select-none group-hover:opacity-[0.12]">
                 {cat.distance}
               </span>
             </div>
@@ -123,39 +123,39 @@ const vars = paletteVars;
                   </span>
                 </div>
               </div>
-              <span class="relative font-mono text-[11px] tracking-[1.5px] text-bone-40 uppercase">
+              <span class="relative font-mono text-[0.6875rem] tracking-[1.5px] text-bone-40 uppercase">
                 {cat.name}
               </span>
             </div>
 
             <div class="relative flex flex-col gap-4">
               <div class="flex items-baseline gap-2">
-                <span class="font-body text-[27px] font-bold text-bone tabular-nums">
+                <span class="font-body text-[1.6875rem] font-bold text-bone tabular-nums">
                   {cat.priceLabel}
                 </span>
-                <span class="font-mono text-[10px] tracking-[1px] text-bone-40 uppercase">
+                <span class="font-mono text-[0.625rem] tracking-[1px] text-bone-40 uppercase">
                   Regular rate
                 </span>
               </div>
 
-              <p class="m-0 text-[18px] leading-[1.55] text-bone-88">{cat.blurb}</p>
+              <p class="m-0 text-[1.125rem] leading-[1.55] text-bone-88">{cat.blurb}</p>
             </div>
 
             {/* Gun start + cut-off — the two facts that decide the distance */}
             <div class="relative grid grid-cols-2 gap-2">
               <div class="rounded-lg bg-white/5 px-3 py-2.5">
-                <div class="font-mono text-[9px] tracking-[1px] text-bone-40 uppercase">
+                <div class="font-mono text-[0.5625rem] tracking-[1px] text-bone-40 uppercase">
                   Gun start
                 </div>
-                <div class="font-body text-[18px] font-semibold text-bone">
+                <div class="font-body text-[1.125rem] font-semibold text-bone">
                   {cat.gunStart}
                 </div>
               </div>
               <div class="rounded-lg bg-white/5 px-3 py-2.5">
-                <div class="font-mono text-[9px] tracking-[1px] text-bone-40 uppercase">
+                <div class="font-mono text-[0.5625rem] tracking-[1px] text-bone-40 uppercase">
                   Cut-off
                 </div>
-                <div class="font-body text-[18px] font-semibold text-bone">
+                <div class="font-body text-[1.125rem] font-semibold text-bone">
                   {cat.cutoff}
                 </div>
               </div>
@@ -164,7 +164,7 @@ const vars = paletteVars;
             <div class="relative h-px w-full bg-white/10" />
 
             <div class="relative flex flex-col items-start gap-2.5">
-              <div class="font-mono text-[10px] tracking-[1px] text-bone-40 uppercase">
+              <div class="font-mono text-[0.625rem] tracking-[1px] text-bone-40 uppercase">
                 Race kit
               </div>
               {cat.kit.map((item) => (
@@ -183,7 +183,7 @@ const vars = paletteVars;
                       stroke-linejoin="round"
                     />
                   </svg>
-                  <span class="text-[18px] leading-[1.45] text-bone-88">{item}</span>
+                  <span class="text-[1.125rem] leading-[1.45] text-bone-88">{item}</span>
                 </div>
               ))}
             </div>
@@ -192,7 +192,7 @@ const vars = paletteVars;
               href={event.registrationUrl}
               target="_blank"
               rel="noopener"
-              class="race-card__cta relative mt-auto flex h-[52px] items-center justify-center rounded-pill px-6 font-body text-[18px] font-bold text-white no-underline transition-[filter,transform] duration-[400ms] hover:brightness-110 active:scale-[0.98]"
+              class="race-card__cta relative mt-auto flex h-[52px] items-center justify-center rounded-pill px-6 font-body text-[1.125rem] font-bold text-white no-underline transition-[filter,transform] duration-[400ms] hover:brightness-110 active:scale-[0.98]"
             >
               Register for {cat.distance}
             </a>
@@ -260,7 +260,7 @@ const vars = paletteVars;
     </div>
 
     <p
-      class="mt-8 text-center font-mono text-[11px] tracking-[0.5px] text-bone-40 uppercase"
+      class="mt-8 text-center font-mono text-[0.6875rem] tracking-[0.5px] text-bone-40 uppercase"
     >
       Online registration only &middot; no walk-in or race-day entry &middot;
       bibs are non-transferable

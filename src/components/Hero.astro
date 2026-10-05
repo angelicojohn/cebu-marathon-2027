@@ -20,10 +20,10 @@ import CtaButton from "./CtaButton.astro";
 
 <section
   id="top"
-  class="relative z-[1] flex h-[90vh] min-h-[640px] flex-row items-stretch justify-between overflow-hidden max-[767px]:h-auto max-[479px]:h-[90vh]"
+  class="relative z-[1] flex min-h-[max(90vh,640px)] flex-row items-stretch justify-between overflow-hidden max-[767px]:min-h-0 max-[479px]:min-h-[90vh]"
 >
   <div
-    class="relative z-[1] flex h-full w-full flex-row items-end justify-start pt-20 pb-20 max-[991px]:pt-[110px] max-[767px]:pt-[130px] max-[479px]:pb-12"
+    class="relative z-[1] flex w-full flex-row items-end justify-start pt-[180px] pb-20 max-[991px]:pt-[110px] max-[767px]:pt-[130px] max-[479px]:pb-12"
   >
     <video
       data-hero-video
@@ -57,7 +57,7 @@ import CtaButton from "./CtaButton.astro";
             class="flex items-center gap-5"
           >
             <span
-              class="font-mono text-[12px] leading-[1.2] font-medium tracking-[1.5px] text-bone-64 uppercase"
+              class="font-mono text-[0.75rem] leading-[1.2] font-medium tracking-[1.5px] text-bone-64 uppercase"
             >
               Presented by
             </span>
@@ -90,7 +90,7 @@ import CtaButton from "./CtaButton.astro";
           data-reveal-delay="200ms"
           class="flex max-w-[460px] flex-col items-start justify-start gap-6 max-[767px]:max-w-[356px]"
         >
-          <p class="m-0 text-[23px] leading-[140%] text-bone max-[479px]:text-[19px]">
+          <p class="m-0 text-[1.4375rem] leading-[140%] text-bone max-[479px]:text-[1.1875rem]">
             AIMS-certified, over the longest bridge in the Philippines, and
             finished to the drums of <strong class="font-bold">Sinulog</strong>.{" "}
             <strong class="font-bold">10 January 2027.</strong>
@@ -110,7 +110,7 @@ import CtaButton from "./CtaButton.astro";
                   >
                     --
                   </span>
-                  <span class="mt-1.5 font-mono text-[12px] tracking-[1.5px] text-bone-64 uppercase">
+                  <span class="mt-1.5 font-mono text-[0.75rem] tracking-[1.5px] text-bone-64 uppercase">
                     {unit}
                   </span>
                 </div>
@@ -124,7 +124,7 @@ import CtaButton from "./CtaButton.astro";
             </div>
             <a
               href="#distances"
-              class="flex items-center justify-center rounded-pill border border-white/35 bg-white/15 px-7 py-3 font-body text-[18px] leading-[150%] font-bold tracking-[-0.01em] text-white uppercase no-underline backdrop-blur-[16px] transition-colors duration-200 hover:bg-white/25 max-[479px]:flex-1"
+              class="flex items-center justify-center rounded-pill border border-white/35 bg-white/15 px-7 py-3 font-body text-[1.125rem] leading-[150%] font-bold tracking-[-0.01em] text-white uppercase no-underline backdrop-blur-[16px] transition-colors duration-200 hover:bg-white/25 max-[479px]:flex-1"
             >
               Distances
             </a>

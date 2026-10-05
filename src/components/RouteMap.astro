@@ -36,21 +36,21 @@ const hasToken = token.length > 0;
           <button
             type="button"
             data-map-play
-            class="flex h-10 flex-none items-center justify-center rounded-pill bg-gold px-5 font-body text-[15px] font-bold whitespace-nowrap text-white transition-colors hover:bg-gold-bright"
+            class="flex h-10 flex-none items-center justify-center rounded-pill bg-gold px-5 font-body text-[0.9375rem] font-bold whitespace-nowrap text-white transition-colors hover:bg-gold-bright"
           >
             Play flyover
           </button>
           <button
             type="button"
             data-map-reset
-            class="flex h-10 flex-none items-center justify-center rounded-pill border border-white/25 bg-navy-950/70 px-5 font-body text-[15px] font-bold whitespace-nowrap text-white backdrop-blur-md transition-colors hover:bg-navy-950"
+            class="flex h-10 flex-none items-center justify-center rounded-pill border border-white/25 bg-navy-950/70 px-5 font-body text-[0.9375rem] font-bold whitespace-nowrap text-white backdrop-blur-md transition-colors hover:bg-navy-950"
           >
             Reset
           </button>
           <button
             type="button"
             data-map-inspect
-            class="flex h-10 flex-none items-center justify-center rounded-pill border border-white/25 bg-navy-950/70 px-5 font-body text-[15px] font-bold whitespace-nowrap text-white backdrop-blur-md transition-colors hover:bg-navy-950"
+            class="flex h-10 flex-none items-center justify-center rounded-pill border border-white/25 bg-navy-950/70 px-5 font-body text-[0.9375rem] font-bold whitespace-nowrap text-white backdrop-blur-md transition-colors hover:bg-navy-950"
           >
             Inspect route
           </button>
@@ -58,7 +58,7 @@ const hasToken = token.length > 0;
 
         {/* Live readout */}
         <div class="pointer-events-none absolute right-4 bottom-4 rounded-xl border border-white/15 bg-navy-950/80 px-5 py-3 backdrop-blur-md">
-          <div class="font-mono text-[10px] tracking-[1.5px] text-bone-40 uppercase">
+          <div class="font-mono text-[0.625rem] tracking-[1.5px] text-bone-40 uppercase">
             Distance covered
           </div>
           <div class="type-stat-sm font-condensed text-bone">
@@ -87,7 +87,7 @@ const hasToken = token.length > 0;
       data-map-status
       class="absolute inset-x-0 bottom-0 bg-navy-950/85 px-6 py-4 backdrop-blur-sm"
     >
-      <p class="m-0 text-[16px] leading-[1.5] text-bone-64">
+      <p class="m-0 text-[1rem] leading-[1.5] text-bone-64">
         {
           hasToken ? (
             <span>Loading the interactive course&hellip;</span>
@@ -125,7 +125,7 @@ const hasToken = token.length > 0;
       function fail(message: string) {
         console.error("[route map]", message);
         if (status) {
-          status.innerHTML = `<p class="m-0 text-[16px] leading-[1.5] text-bone-64"><strong class="font-semibold text-bone">Interactive map unavailable.</strong> ${message}</p>`;
+          status.innerHTML = `<p class="m-0 text-[1rem] leading-[1.5] text-bone-64"><strong class="font-semibold text-bone">Interactive map unavailable.</strong> ${message}</p>`;
         }
       }
 

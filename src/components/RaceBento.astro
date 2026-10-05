@@ -28,7 +28,7 @@ import ScatterIcons from "./ScatterIcons.astro";
     {/* Header */}
     <div data-reveal class="mb-12 flex flex-col items-center gap-5 text-center">
       <div
-        class="flex h-8 items-center justify-center rounded-pill border border-navy-ink/20 px-5 font-mono text-[13px] font-medium tracking-[1.5px] uppercase"
+        class="flex h-8 items-center justify-center rounded-pill border border-navy-ink/20 px-5 font-mono text-[0.8125rem] font-medium tracking-[1.5px] uppercase"
       >
         The race
       </div>
@@ -53,7 +53,7 @@ import ScatterIcons from "./ScatterIcons.astro";
       >
         <div class="relative z-[1] flex items-start justify-between gap-6 max-[767px]:flex-col-reverse">
           <div class="max-w-[36rem]">
-            <span class="font-mono text-[12px] tracking-[2px] text-gold uppercase">
+            <span class="font-mono text-[0.75rem] tracking-[2px] text-gold uppercase">
               Every entry
             </span>
             <p class="raffle-kicker mt-4 mb-1">
@@ -63,7 +63,7 @@ import ScatterIcons from "./ScatterIcons.astro";
               <span class="block whitespace-nowrap max-[479px]:whitespace-normal">Jaecoo J5 Super Hybrid</span>
               <span class="block">System Compact SUV</span>
             </h3>
-            <p class="mt-4 mb-0 max-w-[42ch] text-[18px] leading-[1.6] text-bone-64">
+            <p class="mt-4 mb-0 max-w-[42ch] text-[1.125rem] leading-[1.6] text-bone-64">
               {bento.raffle.body}
             </p>
           </div>
@@ -122,13 +122,13 @@ import ScatterIcons from "./ScatterIcons.astro";
         />
         <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/55 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 p-7">
-          <span class="font-mono text-[12px] tracking-[2px] text-gold uppercase">
+          <span class="font-mono text-[0.75rem] tracking-[2px] text-gold uppercase">
             Race kit
           </span>
           <h3 class="mt-3 mb-2 type-h5 font-display text-bone uppercase">
             {bento.kit.title}
           </h3>
-          <p class="m-0 text-[16px] leading-[1.55] text-bone-88">
+          <p class="m-0 text-[1rem] leading-[1.55] text-bone-88">
             {bento.kit.body}
           </p>
         </div>
@@ -148,13 +148,13 @@ import ScatterIcons from "./ScatterIcons.astro";
         />
         <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 p-7">
-          <span class="font-mono text-[12px] tracking-[2px] text-aqua uppercase">
+          <span class="font-mono text-[0.75rem] tracking-[2px] text-aqua uppercase">
             Route map
           </span>
           <h3 class="mt-3 mb-2 type-h5 font-display text-bone uppercase">
             {bento.route.title}
           </h3>
-          <p class="m-0 text-[16px] leading-[1.55] text-bone-88">{bento.route.body}</p>
+          <p class="m-0 text-[1rem] leading-[1.55] text-bone-88">{bento.route.body}</p>
         </div>
       </article>
 
@@ -170,13 +170,13 @@ import ScatterIcons from "./ScatterIcons.astro";
         />
         <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 p-7">
-          <span class="font-mono text-[12px] tracking-[2px] text-gold uppercase">
+          <span class="font-mono text-[0.75rem] tracking-[2px] text-gold uppercase">
             Sinulog season
           </span>
           <h3 class="mt-3 mb-2 type-h4 font-display text-bone uppercase">
             {bento.sinulog.title}
           </h3>
-          <p class="m-0 max-w-[46ch] text-[16px] leading-[1.55] text-bone-88">
+          <p class="m-0 max-w-[46ch] text-[1rem] leading-[1.55] text-bone-88">
             {bento.sinulog.body}
           </p>
         </div>
@@ -197,13 +197,13 @@ import ScatterIcons from "./ScatterIcons.astro";
         />
         <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 p-7">
-          <span class="font-mono text-[12px] tracking-[2px] text-gold uppercase">
+          <span class="font-mono text-[0.75rem] tracking-[2px] text-gold uppercase">
             Our commitment
           </span>
           <h3 class="mt-3 mb-2 type-h4 font-display text-bone uppercase">
             {bento.zeroWaste.title}
           </h3>
-          <p class="m-0 max-w-[46ch] text-[16px] leading-[1.55] text-bone-88">
+          <p class="m-0 max-w-[46ch] text-[1rem] leading-[1.55] text-bone-88">
             {bento.zeroWaste.body}
           </p>
         </div>
@@ -238,7 +238,7 @@ import ScatterIcons from "./ScatterIcons.astro";
             />
           </div>
         </div>
-        <p class="m-0 max-w-[34ch] text-[18px] leading-[1.5] text-navy-ink/85">
+        <p class="m-0 max-w-[34ch] text-[1.125rem] leading-[1.5] text-navy-ink/85">
           Measured to international standards &mdash; your finish time counts
           toward the world's major marathons.
         </p>
@@ -248,7 +248,7 @@ import ScatterIcons from "./ScatterIcons.astro";
         href={event.registrationUrl}
         target="_blank"
         rel="noopener"
-        class="group flex items-center gap-2 rounded-pill bg-navy-900 px-7 py-3.5 font-body text-[18px] font-bold text-white no-underline transition-colors duration-300 hover:bg-navy-800"
+        class="group flex items-center gap-2 rounded-pill bg-navy-900 px-7 py-3.5 font-body text-[1.125rem] font-bold text-white no-underline transition-colors duration-300 hover:bg-navy-800"
       >
         Register now
         <svg
