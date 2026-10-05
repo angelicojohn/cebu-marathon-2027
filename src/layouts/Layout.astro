@@ -12,8 +12,15 @@ const {
   description = "The AIMS-certified Cebu Marathon runs on 10 January 2027 from SM Seaside City Cebu, over the CCLEX and back. Presented by Cebu Landmasters. 42K ₱2,999, 21K ₱2,799, 10K and 5K ₱1,499.",
 } = Astro.props;
 
-const canonical = event.siteUrl + "/";
-const ogImage = `${event.siteUrl}/images/brand-cover.webp`;
+/* Where this build is actually served. Netlify sets URL (the site's main
+   address) during builds; locally it falls back to the Netlify address.
+   Share cards must point here — pointing them at the official Wix site, as
+   before, made Facebook fetch an image from the wrong domain. */
+const origin = (process.env.URL ?? "https://cebumarathon.netlify.app").replace(/\/$/, "");
+const canonical = origin + "/";
+const ogImage = `${origin}/images/og-cebu-marathon-2027.jpg`;
+const ogAlt =
+  "Cebu Marathon 2027 — Conquer Cebu's biggest race. Sunday, 10 January 2027, SM Seaside City Cebu, over the CCLEX. 42K, 21K, 10K and 5K.";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -69,8 +76,18 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:site_name" content="Cebu Marathon 2027" />
+    <meta property="og:locale" content="en_PH" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
 
     <link
       rel="preload"
