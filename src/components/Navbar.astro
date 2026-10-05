@@ -94,13 +94,13 @@ const links = [
       <button
         type="button"
         data-menu-toggle
-        aria-label="Toggle menu"
+        aria-label="Open menu"
         aria-expanded="false"
         class="hidden h-11 w-11 flex-none items-center justify-center rounded-full bg-navy-ink/10 transition-colors duration-200 max-[991px]:flex"
       >
-        <span class="flex h-full w-full flex-col items-center justify-center gap-1">
-          <span data-bar class="h-0.5 w-[26px] rounded-sm bg-navy-ink transition-colors"></span>
-          <span data-bar class="h-0.5 w-[17px] rounded-sm bg-navy-ink transition-colors"></span>
+        <span class="menu-icon" aria-hidden="true">
+          <span data-bar class="menu-icon__bar menu-icon__bar--top bg-navy-ink"></span>
+          <span data-bar class="menu-icon__bar menu-icon__bar--bottom bg-navy-ink"></span>
         </span>
       </button>
     </div>
@@ -117,6 +117,7 @@ const links = [
     const setMenu = (open: boolean) => {
       menu?.classList.toggle("max-[991px]:hidden", !open);
       toggle?.setAttribute("aria-expanded", String(open));
+      toggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       toggle?.classList.toggle("bg-gold", open);
       toggle?.classList.toggle("bg-navy-ink/10", !open);
       bars.forEach((b) => {
