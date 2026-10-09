@@ -379,6 +379,7 @@ const hasToken = token.length > 0;
            5. Per-frame updates — all driven by `progress`
         --------------------------------------------------------------- */
         const distanceEl = document.querySelector<HTMLElement>("[data-map-distance]");
+        const OFFICIAL_KM = 21.1;
         let smoothedBearing: number | null = null;
 
         function updateAnimatedTrail(progress: number) {
@@ -389,7 +390,11 @@ const hasToken = token.length > 0;
         function updateRunner(progress: number) {
           runner.setLngLat(getPointAlongRoute(coords, table, progress));
           if (distanceEl) {
-            distanceEl.textContent = ((table.total * progress) / 1000).toFixed(2);
+            // The traced line runs longer than the course (about 26.8 km
+            // against 21.1 — it follows some roads the official route does
+            // not), so the readout shows the share of the course covered,
+            // applied to the official distance. It ends on exactly 21.10.
+            distanceEl.textContent = (OFFICIAL_KM * Math.min(1, progress)).toFixed(2);
           }
         }
 
