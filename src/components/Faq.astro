@@ -8,7 +8,7 @@
  * whose vertical bar collapses into a minus on open, the max-height slide,
  * and the single-column stack below 991px.
  */
-import { faqs, event } from "../data/event";
+import { faqs, event, atAGlance } from "../data/event";
 import ScatterIcons from "./ScatterIcons.astro";
 ---
 
@@ -35,8 +35,7 @@ import ScatterIcons from "./ScatterIcons.astro";
           You ask,<br /><span class="script feather-text">we answer</span>
         </h2>
         <p class="m-0 max-w-[40ch] text-[1.125rem] leading-[1.6] text-navy-ink/85">
-          Still stuck? Message the race office on Facebook, or email us — we
-          answer within a working day.
+          Still stuck? Message the race office on Facebook, or email us.
         </p>
         <a
           href={`mailto:${event.infoEmail}`}
@@ -44,6 +43,18 @@ import ScatterIcons from "./ScatterIcons.astro";
         >
           Email the race office
         </a>
+
+        {/* At a glance — the four facts, in one place */}
+        <dl class="glance mt-6 w-full">
+          {
+            atAGlance.map((g) => (
+              <div class="glance__row">
+                <dt>{g.label}</dt>
+                <dd>{g.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
       </div>
 
       {/* Right — accordion */}

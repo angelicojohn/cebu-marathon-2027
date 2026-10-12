@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { event } from "../data/event";
+import { home } from "../lib/site";
 
 /**
  * The old Wix sitemap advertised thirteen `/blank-N` URLs — duplicate home
@@ -14,7 +14,7 @@ export const GET: APIRoute = () => {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${event.siteUrl}/</loc>
+    <loc>${home}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>

@@ -196,6 +196,10 @@ export const bento = {
 
 export const faqs = [
   {
+    q: "Which distance is right for me?",
+    a: "Chasing a personal best or a qualifying time: the 42K, on an AIMS-certified course, so the time counts internationally. Ready to step up: the 21K, over the CCLEX at sunrise. First race, or racing for a time on a flat course: the 10K through the South Road Properties. Running with family or just starting out: the 5K, in daylight with a 1-hour cut-off.",
+  },
+  {
     q: "When is race day?",
     a: "Sunday, 10 January 2027, starting and finishing at the SM Seaside City Cebu grounds. The race is held every year on the second Sunday of January, in Sinulog season.",
   },
@@ -558,4 +562,46 @@ export const moments = [
   { src: "/images/moments/launch-7.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid02G12DoZaP1cg1Kxgrk6kiCTRVzxPK8H1CUEGmTUjPs9rskvwsvbf5hrQFey7H4ZMfl", caption: "Partners on stage" },
   { src: "/images/moments/launch-8.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid028YL9hMgCyDrZUQyV7M34H6x1CxkMJMLkmxSUF1fjyCWEpbV5sHhibrQdZBMa8xhcl", caption: "Cebu's run clubs" },
   { src: "/images/moments/launch-9.webp", post: "https://www.facebook.com/CebuMarathonOfficial/posts/pfbid028YL9hMgCyDrZUQyV7M34H6x1CxkMJMLkmxSUF1fjyCWEpbV5sHhibrQdZBMa8xhcl", caption: "Finisher towel" },
+];
+
+/** "At a glance" — the four facts every visitor needs first. */
+export const atAGlance = [
+  { label: "When", value: "Sunday, 10 January 2027" },
+  { label: "Where", value: "Starts and finishes at SM Seaside City Cebu, over the CCLEX" },
+  { label: "Distances", value: "42K ₱2,999 · 21K ₱2,799 · 10K and 5K ₱1,499" },
+  { label: "Registration", value: "Online only, through the official portal. No race-day entry." },
+];
+
+/** Independent press coverage, with links to the original articles. */
+export const press = [
+  {
+    outlet: "The Freeman",
+    title: "New organizers, better experience for runners at Cebu Marathon 2027",
+    date: "14 Aug 2026",
+    url: "https://www.philstar.com/the-freeman/cebu-sports/2026/08/14/2549221/new-organizers-better-experience-runners-cebu-marathon-2027/",
+  },
+  {
+    outlet: "Cebu Daily News",
+    title: "Cebu Marathon 2026 attracts 11,529 runners",
+    date: "Jan 2026",
+    url: "https://cebudailynews.inquirer.net/683775/cebu-marathon-2026-attracts-11529-runners",
+  },
+  {
+    outlet: "The Freeman",
+    title: "Chepsiror, Torregosa top Cebu Marathon 2026",
+    date: "12 Jan 2026",
+    url: "https://www.philstar.com/the-freeman/cebu-sports/2026/01/12/2500392/chepsiror-torregosa-top-cebu-marathon-2026",
+  },
+  {
+    outlet: "SunStar Cebu",
+    title: "Cebu Marathon 2026 unveils AIMS-certified race with new route",
+    date: "",
+    url: "https://www.sunstar.com.ph/cebu/cebu-marathon-2026-unveils-aims-certified-race-with-new-route-early-bird-promos",
+  },
+  {
+    outlet: "The Freeman",
+    title: "Cebu Marathon 2025 draws record field",
+    date: "10 Jan 2025",
+    url: "https://www.philstar.com/the-freeman/cebu-sports/2025/01/10/2413201/cebu-marathon-2025-draws-record-field",
+  },
 ];

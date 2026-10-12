@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
-import { event, categories } from "../data/event";
+import { event, categories, faqs } from "../data/event";
+import { origin, home } from "../lib/site";
 
 interface Props {
   title?: string;
@@ -12,19 +13,45 @@ const {
   description = "The AIMS-certified Cebu Marathon runs on 10 January 2027 from SM Seaside City Cebu, over the CCLEX and back. Presented by Cebu Landmasters. 42K ₱2,999, 21K ₱2,799, 10K and 5K ₱1,499.",
 } = Astro.props;
 
-/* Where this build is actually served. Netlify sets URL (the site's main
-   address) during builds; locally it falls back to the Netlify address.
-   Share cards must point here — pointing them at the official Wix site, as
-   before, made Facebook fetch an image from the wrong domain. */
-const origin = (process.env.URL ?? "https://cebumarathon.netlify.app").replace(/\/$/, "");
-const canonical = origin + "/";
+const canonical = home;
 const ogImage = `${origin}/images/og-cebu-marathon-2027.jpg`;
 const ogAlt =
   "Cebu Marathon 2027 — Conquer Cebu's biggest race. Sunday, 10 January 2027, SM Seaside City Cebu, over the CCLEX. 42K, 21K, 10K and 5K.";
 
-const jsonLd = {
-  "@context": "https://schema.org",
+/* One graph, several entities: the event itself, the organiser, the
+   site, and the FAQ — so search engines and AI answer engines can quote the
+   questions and answers directly instead of guessing from the page text. */
+const organiser = {
+  "@type": "Organization",
+  "@id": `${home}#organiser`,
+  name: "DJT Events",
+  url: home,
+  email: event.infoEmail,
+  sameAs: [event.facebookUrl],
+};
+
+const faqPage = {
+  "@type": "FAQPage",
+  "@id": `${home}#faq`,
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": `${home}#website`,
+  name: "Cebu Marathon 2027",
+  url: home,
+  inLanguage: "en-PH",
+  publisher: { "@id": `${home}#organiser` },
+};
+
+const sportsEvent = {
   "@type": "SportsEvent",
+  "@id": `${home}#event`,
   name: "Cebu Marathon 2027",
   alternateName: "CM27",
   description,
@@ -45,7 +72,7 @@ const jsonLd = {
       addressCountry: event.venueCountry,
     },
   },
-  organizer: { "@type": "Organization", name: "DJT Events", url: canonical },
+  organizer: { "@id": `${home}#organiser` },
   sponsor: { "@type": "Organization", name: event.presenter },
   offers: categories.map((c) => ({
     "@type": "Offer",
@@ -58,6 +85,11 @@ const jsonLd = {
     validThrough: "2026-11-15T23:59:59+08:00",
   })),
 };
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [sportsEvent, organiser, website, faqPage],
+};
+
 ---
 
 <!doctype html>

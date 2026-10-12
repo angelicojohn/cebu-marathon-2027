@@ -1089,6 +1089,101 @@ body {
   .menu-icon__bar { transition: none; }
 }
 
+/* FAQ "at a glance" box: four key facts as a definition list. */
+.glance {
+  margin: 0;
+  border-radius: 16px;
+  background: #ffffffb3;
+  padding: 8px 20px;
+  box-shadow: 0 16px 40px -30px #01143a80;
+}
+.glance__row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 12px;
+  padding: 12px 0;
+}
+.glance__row + .glance__row {
+  border-top: 1px solid #01143a14;
+}
+.glance dt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold-deep);
+  padding-top: 2px;
+}
+.glance dd {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-navy-ink);
+}
+@media (max-width: 479px) {
+  .glance__row { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* "In the news" press links under the stats. */
+.press__label {
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #01143a8c;
+}
+.press__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.press__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 18px 44px 18px 18px;
+  border-radius: 14px;
+  background: #ffffffb3;
+  text-decoration: none;
+  color: var(--color-navy-ink);
+  transition: transform 300ms ease, box-shadow 300ms ease, background-color 300ms ease;
+}
+.press__item:hover,
+.press__item:focus-visible {
+  transform: translateY(-3px);
+  background: #fff;
+  box-shadow: 0 16px 30px -22px #01143a99;
+}
+.press__outlet {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-rose);
+}
+.press__date { color: #01143a73; font-weight: 400; }
+.press__title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.press__arrow {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  color: #01143a59;
+  transition: transform 300ms ease, color 300ms ease;
+}
+.press__item:hover .press__arrow { transform: translateX(3px); color: var(--color-gold-deep); }
+
 /* Footer social links: round, quiet until hovered. */
 .footer-social {
   display: grid;

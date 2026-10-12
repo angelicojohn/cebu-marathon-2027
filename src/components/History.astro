@@ -69,7 +69,7 @@ const last = history.length - 1;
               <>
                 <img
                   src={h.photo}
-                  alt=""
+                  alt={`Runners at the Cebu Marathon ${h.year}`}
                   loading={i < 3 ? "eager" : "lazy"}
                   decoding="async"
                   class="tl-card__photo"
@@ -79,7 +79,7 @@ const last = history.length - 1;
                 <span class="tl-card__foot">
                   <span class="tl-card__plate">
                     {h.logo ? (
-                      <img src={h.logo} alt="" loading="lazy" decoding="async" class="tl-card__plate-logo" draggable="false" />
+                      <img src={h.logo} alt={`Cebu Marathon ${h.year} logo`} loading="lazy" decoding="async" class="tl-card__plate-logo" draggable="false" />
                     ) : (
                       <span class="tl-card__plate-type">Cebu Marathon</span>
                     )}
@@ -98,7 +98,7 @@ const last = history.length - 1;
                 {h.logo ? (
                   <img
                     src={h.logo}
-                    alt=""
+                    alt={`Cebu Marathon ${h.year} logo`}
                     loading="lazy"
                     decoding="async"
                     class="tl-card__logo"

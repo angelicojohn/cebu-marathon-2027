@@ -12,7 +12,7 @@
  * Adapted: four stats rather than three, and the counter respects
  * prefers-reduced-motion by jumping straight to the final value.
  */
-import { stats } from "../data/event";
+import { stats, press } from "../data/event";
 import ScatterIcons from "./ScatterIcons.astro";
 
 const format = (n: number) => n.toLocaleString("en-PH");
@@ -72,6 +72,27 @@ const format = (n: number) => n.toLocaleString("en-PH");
           </div>
         ))
       }
+    </div>
+
+    {/* In the news — independent coverage, each linking to the article */}
+    <div class="press mt-20">
+      <div class="press__label">In the news</div>
+      <ul class="press__list">
+        {
+          press.map((a) => (
+            <li>
+              <a href={a.url} target="_blank" rel="noopener" class="press__item">
+                <span class="press__outlet">
+                  {a.outlet}
+                  {a.date && <span class="press__date"> &middot; {a.date}</span>}
+                </span>
+                <span class="press__title">{a.title}</span>
+                <span class="press__arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>
